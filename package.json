@@ -1,0 +1,29 @@
+{
+  "name": "pw_proyecto-fijo-backend",
+  "version": "1.0.0",
+  "description": "Backend de Proyecto PW",
+  "keywords": [
+    "backend"
+  ],
+  "homepage": "https://github.com/ManuelRevillaRJ/PW_PROYECTO-FIJO-BACKEND#readme",
+  "bugs": {
+    "url": "https://github.com/ManuelRevillaRJ/PW_PROYECTO-FIJO-BACKEND/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManuelRevillaRJ/PW_PROYECTO-FIJO-BACKEND.git"
+  },
+  "license": "ISC",
+  "author": "Grupo 2",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "build:run": "npx tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  }
+}
