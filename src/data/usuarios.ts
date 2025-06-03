@@ -1,0 +1,49 @@
+import { User } from "../types/types";
+
+export const usuarios: User[] = [
+  {
+    id: "u1",
+    correo: "ana@example.com",
+    password: "hashed_password_ana",
+    nombre: "Ana Torres",
+    token: "token_ana_123",
+    estado: true,
+    permiso: "user",
+  },
+  {
+    id: "u2",
+    correo: "luis@example.com",
+    password: "hashed_password_luis",
+    nombre: "Luis García",
+    token: "token_luis_456",
+    estado: false,
+    permiso: "user",
+  },
+  {
+    id: "u3",
+    correo: "admin@example.com",
+    password: "hashed_password_admin",
+    nombre: "Admin Root",
+    token: "token_admin_789",
+    estado: true,
+    permiso: "admin",
+  },
+  {
+    id: "u4",
+    correo: "maria@example.com",
+    password: "hashed_password_maria",
+    nombre: "Maria López",
+    token: "token_maria_321",
+    estado: true,
+    permiso: "user",
+  },
+  {
+    id: "u5",
+    correo: "carlos@example.com",
+    password: "hashed_password_carlos",
+    nombre: "Carlos Pérez",
+    token: "token_carlos_654",
+    estado: false,
+    permiso: "user",
+  },
+];
