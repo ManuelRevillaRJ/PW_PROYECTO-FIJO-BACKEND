@@ -18,6 +18,7 @@
   "type": "commonjs",
   "main": "index.ts",
   "scripts": {
+    "start": "npx tsc && nodemon dist/app.js",
     "build:run": "npx tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,6 +31,7 @@
     "zod": "^3.25.50"
   },
   "devDependencies": {
+    "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
   }
 }

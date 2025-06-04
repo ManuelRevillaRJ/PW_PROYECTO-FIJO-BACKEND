@@ -6,17 +6,22 @@ interface validateProps {
   source: "body" | "query" | "params" | "headers"
 }
 
-export function validate({schema, source}: validateProps) {
+function validate({ schema, source }: validateProps) {
   return (req: Request, res: Response, next: NextFunction) => {
-      const result = schema.safeParse(req[source])
-      console.log(result)
+    const result = schema.safeParse(req[source])
 
-      if (!result.success) {
-        res.status(400).json({error: result.error.flatten()})
-      }
+    // Debugging
+    const { success, data } = result
+    console.log({ validation: success ? "valid" : "invalid", data })
 
-      // (req as any)[source] = result.data
-      Object.assign(req[source], result.data)
-      next()
+    if (!result.success) {
+      res.status(400).json({ error: result.error })
+    }
+
+    // (req as any)[source] = result.data
+    Object.assign(req[source], result.data)
+    next()
   }
 }
+
+export default validate

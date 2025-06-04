@@ -1,6 +1,6 @@
 import { Router } from "express"
 import SMTP2GOApi from "smtp2go-nodejs"
-import { validate } from "../middleware/validationMiddleware"
+import validate from "../middleware/validationMiddleware"
 import { signupSchema } from "../schemas/sessionSchemas"
 
 // api config

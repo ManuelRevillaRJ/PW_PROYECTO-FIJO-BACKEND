@@ -4,6 +4,7 @@ import cors from "cors"
 import gamesRouter from "./routes/games"
 import sessionsRouter from "./routes/sessions"
 import usersRouter from "./routes/users"
+import debug from "./middleware/debug"
 
 // Para correr la app:
 // $ npm run build:run
@@ -22,10 +23,7 @@ app.use(
 
 // Middleware (corre antes de cada endpoint)
 // Para debug y ver en consola los endpoint hits
-app.use((req, _, next) => {
-  console.log(`${req.method} ${req.originalUrl}`)
-  next()
-})
+app.use(debug())
 
 // Home Endpoint
 app.get("/", function (_, res) {

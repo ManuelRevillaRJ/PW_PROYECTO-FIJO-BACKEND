@@ -2,21 +2,16 @@ import { Router } from "express"
 import { usuarios } from "../data/usuarios"
 import { User } from "../types/types"
 import { z } from "zod"
-import { validate } from "../middleware/validationMiddleware"
+import validate from "../middleware/validationMiddleware"
 
 const usersRouter = Router()
 
 // Endpoints usuarios --------------------------
 
-const usersQuerySchema = z
-  .object({
-    state: z.enum(["true", "false"]).optional(),
-    role: z.enum(["user", "admin"]).optional(),
-  })
-  .transform((data) => ({
-    state: data.state?.toLowerCase(),
-    role: data.role?.toLowerCase(),
-  }))
+const usersQuerySchema = z.object({
+  state: z.enum(["true", "false"]).optional(),
+  role: z.enum(["user", "admin"]).optional(),
+})
 
 usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), (req, res) => {
   const { state, role } = req.query
@@ -41,7 +36,7 @@ const userQuerySchema = z.object({
 usersRouter.get("/:id", validate({ schema: userQuerySchema, source: "params" }), (req, res) => {
   const id = req.params.id
   const usuario = usuarios.find((u) => u.id === id)
-  if (!usuario) res.status(404).send("Usuario no encontrado")
+  if (!usuario) res.status(404).json({ message: "Usuario no encontrado" })
   res.json(usuario)
 })
 
