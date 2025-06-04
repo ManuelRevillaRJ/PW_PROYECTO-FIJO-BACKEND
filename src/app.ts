@@ -1,8 +1,5 @@
 import express from "express"
-import { juegos } from "./data/juegos"
 import dotenv from "dotenv"
-import SMTP2GOApi from "smtp2go-nodejs"
-import { User } from "./types/types"
 import cors from "cors"
 import gamesRouter from "./routes/games"
 import sessionsRouter from "./routes/sessions"
