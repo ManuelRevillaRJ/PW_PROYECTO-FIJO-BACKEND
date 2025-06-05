@@ -2,34 +2,11 @@ import { Router } from "express"
 import { juegos } from "../data/juegos"
 import { Game } from "../types/types"
 import validate from "../middleware/validationMiddleware"
-import { z } from "zod"
+import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas"
 
 const gamesRouter = Router()
 
 // Endpoints juegos --------------------------
-// Categorias y Plataformas
-const listaPlataformas = [
-  ...new Set(juegos.flatMap((j) => j.plataformas.map((p) => p.toLowerCase()))),
-] as [string, ...string[]]
-const listaCategorias = [
-  ...new Set(juegos.flatMap((j) => j.categorias.map((c) => c.toLowerCase()))),
-] as [string, ...string[]]
-
-// Normalizar params
-// const normalizeEnum = (allowed: string[]) =>
-//   z
-//     .string()
-//     .transform((val) => val.toLowerCase())
-//     .refine((val) => allowed.includes(val), {
-//       message: "Invalid value",
-//     });
-
-const gamesQuerySchema = z.object({
-  platform: z.enum(listaPlataformas).optional(),
-  category: z.enum(listaCategorias).optional(),
-  // offer: z.enum(["true", "false"]).optional(),
-  offer: z.coerce.boolean().optional(),
-})
 
 gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (req, res) => {
   const { platform, category, offer } = req.query
@@ -49,16 +26,10 @@ gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (r
   }
 
   if (offer) {
-    juegosFiltrados = juegosFiltrados.filter((j) =>
-      offer === "true" ? j.esta_oferta : !j.esta_oferta
-    )
+    juegosFiltrados = juegosFiltrados.filter((j) => j.esta_oferta === (offer === "true"))
   }
 
   res.json(juegosFiltrados)
-})
-
-const gameQuerySchema = z.object({
-  id: z.string().min(1),
 })
 
 gamesRouter.get("/:id", validate({ schema: gameQuerySchema, source: "params" }), (req, res) => {

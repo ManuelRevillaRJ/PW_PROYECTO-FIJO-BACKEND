@@ -1,17 +1,12 @@
 import { Router } from "express"
 import { usuarios } from "../data/usuarios"
 import { User } from "../types/types"
-import { z } from "zod"
 import validate from "../middleware/validationMiddleware"
+import { userQuerySchema, usersQuerySchema } from "../schemas/userSchemas"
 
 const usersRouter = Router()
 
 // Endpoints usuarios --------------------------
-
-const usersQuerySchema = z.object({
-  state: z.enum(["true", "false"]).optional(),
-  role: z.enum(["user", "admin"]).optional(),
-})
 
 usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), (req, res) => {
   const { state, role } = req.query
@@ -27,10 +22,6 @@ usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), (r
   }
 
   res.json(usuariosFiltrados)
-})
-
-const userQuerySchema = z.object({
-  id: z.string().min(1),
 })
 
 usersRouter.get("/:id", validate({ schema: userQuerySchema, source: "params" }), (req, res) => {
