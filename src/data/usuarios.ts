@@ -2,6 +2,15 @@ import { User } from "../types/types";
 
 export const usuarios: User[] = [
   {
+    id: "1",
+    correo: "thiago.checa@gmail.com",
+    password: "1234",
+    nombre: "Thiago Checa",
+    token: "token_thiago_123",
+    estado: true,
+    permiso: "user",
+  },
+  {
     id: "u1",
     correo: "ana@example.com",
     password: "hashed_password_ana",
@@ -46,4 +55,4 @@ export const usuarios: User[] = [
     estado: false,
     permiso: "user",
   },
-];
+]

@@ -26,7 +26,7 @@ gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (r
   }
 
   if (offer) {
-    juegosFiltrados = juegosFiltrados.filter((j) => j.esta_oferta === (offer === "true"))
+    juegosFiltrados = juegosFiltrados.filter((j) => j.oferta === (offer === "true"))
   }
 
   res.json(juegosFiltrados)

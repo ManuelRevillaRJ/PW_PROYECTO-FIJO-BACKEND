@@ -7,7 +7,8 @@ import usersRouter from "./routes/users"
 import debug from "./middleware/debug"
 
 // Para correr la app:
-// $ npm run build:run
+// $ npm run dev
+// $ npm run start para build
 
 // .env config
 dotenv.config()

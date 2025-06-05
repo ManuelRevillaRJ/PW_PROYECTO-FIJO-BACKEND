@@ -18,9 +18,9 @@
   "type": "commonjs",
   "main": "index.ts",
   "scripts": {
-    "start": "npx tsc && nodemon dist/app.js",
-    "build:run": "npx tsc && node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dev": "nodemon",
+  "start": "npx tsc && node dist/app.js",
+  "build": "npx tsc"
   },
   "dependencies": {
     "@types/express": "^5.0.2",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
 }
