@@ -3,21 +3,30 @@ import SMTP2GOApi from "smtp2go-nodejs"
 import validate from "../middleware/validationMiddleware"
 import { changePassSchema, loginSchema, signupSchema } from "../schemas/sessionSchemas"
 import { usuarios } from "../data/usuarios"
-import dotenv from "dotenv"
+import { API_KEY, SENDER } from "../config"
+import { StatusCodes } from "http-status-codes"
 
-dotenv.config()
-
-// api config
-const API_KEY = process.env.SMTP_API_KEY as string
-const SENDER = process.env.SENDER as string
 const api = SMTP2GOApi(API_KEY)
+
+// Referencias
+// https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
 
 const sessionsRouter = Router()
 
 // Endpoints sesiones --------------------------
 
 sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }), (req, res) => {
-  const { nombre, correo, password } = req.body // TODO: password hash con lib bcryptjs
+  const { nombre, correo, password } = req.body
+
+  const foundUser = usuarios.find((u) => u.correo === correo)
+
+  if (foundUser) {
+    res.status(StatusCodes.CONFLICT).json({ message: "Ya existe un usuario con este correo" })
+    return
+  }
+
+  // TODO: password hash con lib bcrypt y generar JWT
+
   try {
     const mailService = api
       .mail()
@@ -27,15 +36,26 @@ sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }
   <p>Cuenta creada exitosamente!</p>`)
     api.client().consume(mailService)
   } catch (error) {
-    res.status(500).json({ message: "Error mandando correo" })
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
   }
-  res.status(201).json({ message: "Usuario creado exitosamente!" })
+  res.status(StatusCodes.CREATED).json({ message: "Usuario creado exitosamente!" })
 })
 
 sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }), (req, res) => {
   const { correo, password } = req.body
 
-  // TODO
+  const foundUser = usuarios.find((u) => u.correo === correo)
+
+  if (!foundUser) {
+    res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no encontrado" })
+    return
+  }
+
+  // TODO: Pasos:
+  // 1. Comparar password enviado con el hasheado en la DB usando bcrypt
+  // 2. Si es incorrecto devolver error
+  // 3. Generar JWT (token) del usuario y actualizarlo en la DB
+  // 4. Devolver informacion del usuario y respuesta exitosa
 })
 
 sessionsRouter.post(
@@ -47,7 +67,7 @@ sessionsRouter.post(
     // Verificar si correo existe
     const listaUsuarios = usuarios
     if (listaUsuarios.flatMap((u) => u.correo.toLowerCase()).includes(correo.toLowerCase())) {
-      res.status(404).json({ message: "Usuario con este correo no existe" })
+      res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario con este correo no existe" })
     }
 
     // TODO: Hashear contraseña y almacenar en DB
@@ -66,9 +86,9 @@ sessionsRouter.post(
                 </p>`)
       api.client().consume(mailService)
     } catch (error) {
-      res.status(500).json({ message: "Error mandando correo" })
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
     }
-    res.status(201).json({ message: "Contraseña restaurada exitosamente!" })
+    res.status(StatusCodes.CREATED).json({ message: "Contraseña restaurada exitosamente!" })
   }
 )
 

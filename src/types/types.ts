@@ -48,9 +48,10 @@ export const GameSchema = z.object({
 export type Game = z.infer<typeof GameSchema>
 
 // Noticia (sin relaciones)
-export type News = {
-  id: number
-  titulo: string
-  texto: string
-  activo: boolean
-}
+export const NewsSchema = z.object({
+  id: z.string(),
+  titulo: z.string(),
+  texto: z.string(),
+  activo: z.boolean(),
+})
+export type News = z.infer<typeof NewsSchema>
