@@ -1,0 +1,31 @@
+POST http://localhost:3000/sessions/signup
+Content-Type: application/json
+
+{
+  "nombre": "Thiago Checa",
+  "correo": "thiago.checa@gmail.com",
+  "password": "password"
+}
+
+POST http://localhost:3000/sessions/login
+Content-Type: application/json
+
+{
+  "correo": "thiago.checa@gmail.com",
+  "password": "password"
+}
+
+POST http://localhost:3000/sessions/logout
+Content-Type: application/json
+
+{
+  "correo": "thiago.checa@gmail.com"
+}
+
+POST http://localhost:3000/sessions/change_pass
+Content-Type: application/json
+
+{
+  "correo": "thiago.checa@gmail.com",
+  "newPassword": "newPassword"
+}

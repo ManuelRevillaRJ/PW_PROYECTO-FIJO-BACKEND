@@ -11,6 +11,10 @@ export const loginSchema = z.object({
   password: z.string(),
 })
 
+export const logoutSchema = z.object({
+  correo: z.string().email(),
+})
+
 export const changePassSchema = z.object({
   correo: z.string().email(),
   newPassword: z.string(),

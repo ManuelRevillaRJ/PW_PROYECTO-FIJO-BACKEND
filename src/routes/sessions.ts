@@ -1,7 +1,12 @@
 import { Router } from "express"
 import SMTP2GOApi from "smtp2go-nodejs"
 import validate from "../middleware/validationMiddleware"
-import { changePassSchema, loginSchema, signupSchema } from "../schemas/sessionSchemas"
+import {
+  changePassSchema,
+  loginSchema,
+  logoutSchema,
+  signupSchema,
+} from "../schemas/sessionSchemas"
 import { usuarios } from "../data/usuarios"
 import { API_KEY, SENDER } from "../config"
 import { StatusCodes } from "http-status-codes"
@@ -56,6 +61,24 @@ sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }),
   // 2. Si es incorrecto devolver error
   // 3. Generar JWT (token) del usuario y actualizarlo en la DB
   // 4. Devolver informacion del usuario y respuesta exitosa
+
+  res.status(StatusCodes.OK).json({ message: "Usuario a ingresado exitosamente!" })
+})
+
+sessionsRouter.post("/logout", validate({ schema: logoutSchema, source: "body" }), (req, res) => {
+  const { correo } = req.body
+
+  const foundUser = usuarios.find((u) => u.correo === correo)
+
+  if (!foundUser) {
+    // No hacer nada
+    // res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no encontrado" })
+    return
+  }
+
+  // TODO: Retornar usuario sin token
+
+  res.status(StatusCodes.OK).json({ message: "Usuario logged out" })
 })
 
 sessionsRouter.post(
@@ -66,7 +89,8 @@ sessionsRouter.post(
 
     // Verificar si correo existe
     const listaUsuarios = usuarios
-    if (listaUsuarios.flatMap((u) => u.correo.toLowerCase()).includes(correo.toLowerCase())) {
+    const foundUser = listaUsuarios.find((u) => u.correo === correo)
+    if (!foundUser) {
       res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario con este correo no existe" })
     }
 

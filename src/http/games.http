@@ -1,11 +1,11 @@
-# GET http://localhost:3000/games?platform=ps5&offer=true
+GET http://localhost:3000/games?platform=ps5&offer=true
 
 GET http://localhost:3000/games?category=action
 
-# GET http://localhost:3000/games?category=action&category=adventure
+GET http://localhost:3000/games?category=action&category=adventure
 
-# GET http://localhost:3000/games?category=action&category=adventure&strict=true
+GET http://localhost:3000/games?category=action&category=adventure&strict=true
 
-# GET http://localhost:3000/games
+GET http://localhost:3000/games
 
-# GET http://localhost:3000/games/1
+GET http://localhost:3000/games/1
