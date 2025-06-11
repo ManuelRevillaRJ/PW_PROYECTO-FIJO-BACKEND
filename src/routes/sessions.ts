@@ -1,5 +1,6 @@
 import { Router } from "express"
 import SMTP2GOApi from "smtp2go-nodejs"
+import jwt from "jsonwebtoken"
 import validate from "../middleware/validationMiddleware"
 import {
   changePassSchema,
@@ -8,8 +9,9 @@ import {
   signupSchema,
 } from "../schemas/sessionSchemas"
 import { usuarios } from "../data/usuarios"
-import { API_KEY, SENDER } from "../config"
+import { API_KEY, JWT_SECRET, SENDER } from "../config"
 import { StatusCodes } from "http-status-codes"
+import { safeUser, User } from "../types/types"
 
 const api = SMTP2GOApi(API_KEY)
 
@@ -43,7 +45,20 @@ sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
   }
-  res.status(StatusCodes.CREATED).json({ message: "Usuario creado exitosamente!" })
+
+  const newUser: User = {
+    id: Date.now().toString(),
+    nombre: nombre,
+    correo: correo,
+    password: password, // TODO: hashear password
+    estado: true,
+    permiso: "user",
+  }
+
+  const usuario = safeUser.parse(newUser)
+  const token = jwt.sign(usuario, JWT_SECRET)
+
+  res.status(StatusCodes.CREATED).json({ token: token })
 })
 
 sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }), (req, res) => {
@@ -52,7 +67,12 @@ sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }),
   const foundUser = usuarios.find((u) => u.correo === correo)
 
   if (!foundUser) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no encontrado" })
+    res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no existe con este correo" })
+    return
+  }
+
+  if (foundUser.password !== password) {
+    res.status(StatusCodes.NOT_FOUND).json({ message: "Contraseña incorrecta" })
     return
   }
 
@@ -62,7 +82,10 @@ sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }),
   // 3. Generar JWT (token) del usuario y actualizarlo en la DB
   // 4. Devolver informacion del usuario y respuesta exitosa
 
-  res.status(StatusCodes.OK).json({ message: "Usuario a ingresado exitosamente!" })
+  const usuario = safeUser.parse(foundUser)
+  const token = jwt.sign(usuario, JWT_SECRET)
+
+  res.status(StatusCodes.OK).json({ token: token })
 })
 
 sessionsRouter.post("/logout", validate({ schema: logoutSchema, source: "body" }), (req, res) => {

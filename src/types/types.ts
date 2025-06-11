@@ -6,16 +6,13 @@ export const UserSchema = z.object({
   correo: z.string().email(),
   password: z.string(),
   nombre: z.string(),
-  token: z.string(),
   estado: z.boolean(),
   permiso: z.enum(["user", "admin"]),
 })
 export type User = z.infer<typeof UserSchema>
 export const safeUser = UserSchema.omit({
   password: true,
-  token: true,
   estado: true,
-  permiso: true,
 })
 
 // Venta (muchos a uno con Juego y Usuario)

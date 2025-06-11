@@ -10,16 +10,19 @@ interface validateProps {
 function validate({ schema, source }: validateProps) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req[source])
-      next()
+      var parsed = schema.safeParse(req[source])
+
+      if (parsed.success) {
+        req[source] = parsed.data
+        return next()
+      }
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors.map((issue: any) => ({
-          message: `${issue.path.join(".")} is ${issue.message}`,
-        }))
-        res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid data", details: errorMessages })
+        res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid data", error })
+        return
       } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
+        return
       }
     }
   }
