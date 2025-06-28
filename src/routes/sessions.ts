@@ -15,8 +15,6 @@ import { safeUser, User } from "../types/types"
 
 const api = SMTP2GOApi(API_KEY)
 
-// Referencias
-// https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
 
 const sessionsRouter = Router()
 

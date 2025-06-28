@@ -5,16 +5,10 @@ import validate from "../middleware/validationMiddleware"
 import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas"
 import z from "zod"
 import { StatusCodes } from "http-status-codes"
+import tokenValidation from "../middleware/tokenValidation"
 
 const gamesRouter = Router()
-
-// Categorias y Plataformas extraidos de lista de juegos
-// const listaPlataformas = [
-//   ...new Set(juegos.flatMap((j) => j.plataformas.map((p) => p.toLowerCase()))),
-// ] as [string, ...string[]]
-// const listaCategorias = [
-//   ...new Set(juegos.flatMap((j) => j.categorias.map((c) => c.toLowerCase()))),
-// ] as [string, ...string[]]
+gamesRouter.use(tokenValidation())
 
 // Endpoints juegos --------------------------
 

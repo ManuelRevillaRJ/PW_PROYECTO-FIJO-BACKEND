@@ -5,8 +5,10 @@ import validate from "../middleware/validationMiddleware"
 import { userQuerySchema, usersQuerySchema, userUpdateSchema } from "../schemas/userSchemas"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod"
+import tokenValidation from "../middleware/tokenValidation"
 
 const usersRouter = Router()
+usersRouter.use(tokenValidation())
 
 // Endpoints usuarios --------------------------
 
