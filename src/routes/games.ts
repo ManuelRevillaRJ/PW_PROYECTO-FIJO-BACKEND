@@ -6,9 +6,10 @@ import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas"
 import z from "zod"
 import { StatusCodes } from "http-status-codes"
 import tokenValidation from "../middleware/tokenValidation"
+import prisma from "../db/prismaClient"
 
 const gamesRouter = Router()
-gamesRouter.use(tokenValidation())
+// gamesRouter.use(tokenValidation())
 
 // Endpoints juegos --------------------------
 
@@ -42,14 +43,21 @@ gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (r
   res.json(juegosFiltrados)
 })
 
-gamesRouter.get("/:id", validate({ schema: gameQuerySchema, source: "params" }), (req, res) => {
-  const id = req.params.id
-  const juego = juegos.find((j) => j.id === id)
-  if (!juego) {
-    res.status(StatusCodes.NOT_FOUND).json({ error: "Juego no encontrado" })
-    return
+gamesRouter.get(
+  "/:id",
+  validate({ schema: gameQuerySchema, source: "params" }),
+  async (req, res) => {
+    const idParam = req.params.id
+
+    // const juego = juegos.find((j) => j.id === id)
+    const juego = await prisma.juego.findUnique({ where: { id: parseInt(idParam) } })
+
+    if (!juego) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Juego no encontrado" })
+      return
+    }
+    res.json(juego)
   }
-  res.json(juego)
-})
+)
 
 export default gamesRouter

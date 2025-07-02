@@ -17,13 +17,17 @@
   "author": "Grupo 2",
   "type": "commonjs",
   "main": "index.ts",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "nodemon",
     "start": "npx tsc && node dist/app.js",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.10.1",
+    "@prisma/client": "^6.11.0",
     "@types/express": "^5.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -36,7 +40,7 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
     "nodemon": "^3.1.10",
-    "prisma": "^6.10.1",
+    "prisma": "^6.11.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }

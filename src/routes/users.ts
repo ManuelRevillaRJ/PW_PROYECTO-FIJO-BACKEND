@@ -6,9 +6,11 @@ import { userQuerySchema, usersQuerySchema, userUpdateSchema } from "../schemas/
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod"
 import tokenValidation from "../middleware/tokenValidation"
+import prisma from "../db/prismaClient"
+import { Usuario } from "../generated/prisma/client/index"
 
 const usersRouter = Router()
-usersRouter.use(tokenValidation())
+// usersRouter.use(tokenValidation())
 
 // Endpoints usuarios --------------------------
 
@@ -36,17 +38,24 @@ usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), (r
   res.json(safeUsuarios)
 })
 
-usersRouter.get("/:id", validate({ schema: userQuerySchema, source: "params" }), (req, res) => {
-  const id = req.params.id as z.infer<typeof userQuerySchema>
-  const usuario = usuarios.find((u) => u.id === id)
-  if (!usuario) {
-    res.status(StatusCodes.NOT_FOUND).json({ error: "Usuario no encontrado" })
-    return
-  }
+usersRouter.get(
+  "/:id",
+  validate({ schema: userQuerySchema, source: "params" }),
+  async (req, res) => {
+    const idParam = req.params.id //as z.infer<typeof userQuerySchema>
 
-  const safeUsuario = safeUser.parse(usuario)
-  res.json(safeUsuario)
-})
+    // const usuario = usuarios.find((u) => u.id === id)
+    const usuario = await prisma.usuario.findUnique({ where: { id: parseInt(idParam) } })
+
+    if (!usuario) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Usuario no encontrado" })
+      return
+    }
+
+    const safeUsuario = safeUser.parse(usuario)
+    res.json(safeUsuario)
+  }
+)
 
 usersRouter.post("/update", validate({ schema: userUpdateSchema, source: "body" }), (req, res) => {
   const { firstName, lastName, email } = req.body
