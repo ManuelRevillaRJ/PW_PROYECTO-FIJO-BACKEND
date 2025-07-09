@@ -28,7 +28,7 @@ export const usuarios: User[] = [
   {
     id: "u3",
     correo: "admin@example.com",
-    password: "hashed_password_admin",
+    password: "123",
     nombre: "Admin Root",
     estado: true,
     permiso: "admin",

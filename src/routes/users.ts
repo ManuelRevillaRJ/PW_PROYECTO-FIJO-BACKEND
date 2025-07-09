@@ -57,6 +57,7 @@ usersRouter.get(
   }
 )
 
+
 usersRouter.post("/update", validate({ schema: userUpdateSchema, source: "body" }), (req, res) => {
   const { firstName, lastName, email } = req.body
 
