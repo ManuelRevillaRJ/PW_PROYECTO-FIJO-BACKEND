@@ -3,9 +3,6 @@ import cors from "cors"
 import gamesRouter from "./routes/games"
 import sessionsRouter from "./routes/sessions"
 import usersRouter from "./routes/users"
-import authRouter from "./routes/auth"
-import carritoRouter from "./routes/carrito"
-import adminRouter from "./routes/admin"
 import debug from "./middleware/debug"
 import { PORT } from "./config"
 
@@ -36,9 +33,6 @@ app.use("/sessions", sessionsRouter)
 app.use("/games", gamesRouter)
 // Users Endpoint
 app.use("/users", usersRouter)
-app.use("/auth", authRouter)
-app.use("/carrito", carritoRouter)
-app.use("/admin", adminRouter)
 
 
 app.listen(PORT, () => {
