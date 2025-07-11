@@ -100,3 +100,15 @@ model Noticia {
   activo Boolean
 }
 
+model Carrito {
+  id         Int      @id @default(autoincrement())
+  usuario    Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id Int
+  juego      Juego    @relation(fields: [juego_id], references: [id])
+  juego_id   Int
+  cantidad   Int
+  agregadoEn DateTime @default(now())
+
+  @@unique([usuario_id, juego_id])
+}
+

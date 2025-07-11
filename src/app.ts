@@ -34,6 +34,7 @@ app.use("/games", gamesRouter)
 // Users Endpoint
 app.use("/users", usersRouter)
 
+
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`)
 })
