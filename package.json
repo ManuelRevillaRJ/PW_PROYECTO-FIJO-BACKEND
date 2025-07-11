@@ -18,13 +18,13 @@
   "type": "commonjs",
   "main": "index.ts",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/db/seed.ts"
   },
   "scripts": {
     "dev": "nodemon",
     "start": "npx tsc && node dist/app.js",
     "build": "npx tsc",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/db/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.11.0",

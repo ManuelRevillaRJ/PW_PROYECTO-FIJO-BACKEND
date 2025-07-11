@@ -45,7 +45,7 @@ sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }
   }
 
   const newUser: User = {
-    id: Date.now().toString(),
+    id: Date.now(),
     nombre: nombre,
     correo: correo,
     password: password, // TODO: hashear password

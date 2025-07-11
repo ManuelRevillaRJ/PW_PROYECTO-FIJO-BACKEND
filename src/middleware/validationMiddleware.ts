@@ -15,13 +15,17 @@ function validate({ schema, source }: validateProps) {
       if (parsed.success) {
         req[source] = parsed.data
         return next()
+      } else {
+        res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid data" })
       }
     } catch (error) {
       if (error instanceof ZodError) {
         res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid data", error })
         return
       } else {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .json({ error: "Internal Server Error: Type Validation Middleware" })
         return
       }
     }

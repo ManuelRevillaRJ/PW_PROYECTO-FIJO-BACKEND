@@ -60,7 +60,6 @@ model Juego {
   cover String
   imagenes String[]
   videoURL String?
-
 }
 
 model Calificacion {

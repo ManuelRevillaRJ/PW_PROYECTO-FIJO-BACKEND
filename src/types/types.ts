@@ -2,12 +2,13 @@ import { z } from "zod"
 
 // Usuario
 export const UserSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   correo: z.string().email(),
   password: z.string(),
   nombre: z.string(),
   estado: z.boolean(),
   permiso: z.enum(["user", "admin"]),
+  token: z.string(),
 })
 export type User = z.infer<typeof UserSchema>
 export const safeUser = UserSchema.omit({
@@ -17,7 +18,7 @@ export const safeUser = UserSchema.omit({
 
 // Venta (muchos a uno con Juego y Usuario)
 export const SaleSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   fecha: z.number(), // Timestamp (milliseconds)
   usuario_id: z.string(),
   juego_id: z.string(),
@@ -28,7 +29,7 @@ export type Sale = z.infer<typeof SaleSchema>
 
 // Juego (Game) - principal
 export const GameSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   titulo: z.string(),
   description: z.string(),
   precio: z.number(),
@@ -46,7 +47,7 @@ export type Game = z.infer<typeof GameSchema>
 
 // Noticia (sin relaciones)
 export const NewsSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   titulo: z.string(),
   texto: z.string(),
   activo: z.boolean(),

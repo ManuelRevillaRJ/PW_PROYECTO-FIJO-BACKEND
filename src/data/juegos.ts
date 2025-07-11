@@ -2,7 +2,7 @@ import type { Game } from "../types/types";
 
 export const juegos: Game[] = [
   {
-    id: "1",
+    id: 1,
     titulo: "Grand Theft Auto V",
     description:
       "Grand Theft Auto V es un videojuego de acción-aventura de mundo abierto desarrollado por Rockstar North y distribuido por Rockstar Games.",
@@ -22,7 +22,7 @@ export const juegos: Game[] = [
     plataformas: ["Windows", "PS5", "PS4"],
     ventas: [
       {
-        id: "1",
+        id: 1,
         fecha: Date.now() - 3 * 24 * 60 * 60 * 1000, // 3 days ago
         usuario_id: "1",
         juego_id: "1",
@@ -30,7 +30,7 @@ export const juegos: Game[] = [
         monto: 29.99,
       },
       {
-        id: "2",
+        id: 2,
         fecha: Date.now() - 10 * 24 * 60 * 60 * 1000, // 10 days ago
         usuario_id: "1",
         juego_id: "1",
@@ -38,7 +38,7 @@ export const juegos: Game[] = [
         monto: 49.99,
       },
       {
-        id: "3",
+        id: 3,
         fecha: Date.now() - 1 * 24 * 60 * 60 * 1000, // Yesterday
         usuario_id: "1",
         juego_id: "1",
@@ -46,7 +46,7 @@ export const juegos: Game[] = [
         monto: 19.99,
       },
       {
-        id: "4",
+        id: 4,
         fecha: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30 days ago
         usuario_id: "1",
         juego_id: "1",
@@ -54,7 +54,7 @@ export const juegos: Game[] = [
         monto: 59.99,
       },
       {
-        id: "5",
+        id: 5,
         fecha: Date.now(), // Today
         usuario_id: "1",
         juego_id: "1",
@@ -64,7 +64,7 @@ export const juegos: Game[] = [
     ],
   },
   {
-    id: "2",
+    id: 2,
     titulo: "Stardew Valley",
     description:
       "simulación de granja desarrollado por Eric ConcernedApe Barone y publicado por Chucklefish Games (actualmente por ConcernedApe). ",
@@ -84,7 +84,7 @@ export const juegos: Game[] = [
     plataformas: ["PS5", "Switch"],
     ventas: [
       {
-        id: "1",
+        id: 1,
         fecha: Date.now() - 3 * 24 * 60 * 60 * 1000, // 3 days ago
         usuario_id: "1",
         juego_id: "2",
@@ -94,7 +94,7 @@ export const juegos: Game[] = [
     ],
   },
   {
-    id: "3",
+    id: 3,
     titulo: "Schedule I",
     description: "Simulador de Breaking Bad",
     cover:
@@ -114,7 +114,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "4",
+    id: 4,
     titulo: "R.E.P.O",
     description:
       "Videojuego cooperativo de terror y supervivencia en línea , desarrollado y publicado por el estudio sueco Semiwork para Windows .",
@@ -135,7 +135,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "5",
+    id: 5,
     titulo: "The Witcher 3: Wild Hunt",
     description:
       "Un RPG de mundo abierto donde juegas como Geralt de Rivia, un cazador de monstruos en busca de su hija adoptiva.",
@@ -155,7 +155,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "6",
+    id: 6,
     titulo: "Red Dead Redemption 2",
     description:
       "Un épico juego de acción y aventura del viejo oeste desarrollado por Rockstar Games.",
@@ -175,7 +175,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "7",
+    id: 7,
     titulo: "Cyberpunk 2077",
     description:
       "Un juego de rol de acción ambientado en un futuro distópico donde juegas como un mercenario conocido como V.",
@@ -196,7 +196,7 @@ export const juegos: Game[] = [
   },
 
   {
-    id: "8",
+    id: 8,
     titulo: "Elden Ring",
     description:
       "Un RPG de acción desarrollado por FromSoftware en colaboración con George R. R. Martin.",
@@ -216,7 +216,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "9",
+    id: 9,
     titulo: "Infinity Blade II",
     description:
       "La secuela del revolucionario juego de acción y combate, ahora adaptado para Windows y MacOS con gráficos remasterizados y nuevas mecánicas de RPG.",
@@ -237,7 +237,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "10",
+    id: 10,
     titulo: "Titanfall 2",
     description:
       "Shooter en primera persona con una campaña aclamada y multijugador intenso donde combates como piloto y titán.",
@@ -257,7 +257,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "11",
+    id: 11,
     titulo: "Ironsight",
     description:
       "FPS gratuito ambientado en un futuro cercano con combates rápidos, drones, y armas futuristas.",
@@ -277,7 +277,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "12",
+    id: 12,
     titulo: "Resident Evil 4 Remake",
     description:
       "Remake del clásico de terror y acción con gráficos modernos y jugabilidad renovada para la nueva generación.",
@@ -297,7 +297,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "13",
+    id: 13,
     titulo: "Resident Evil Village",
     description:
       "Sobrevive a horrores sobrenaturales en una villa maldita en esta entrega de la icónica saga Resident Evil.",
@@ -317,7 +317,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "14",
+    id: 14,
     titulo: "Bravely Default",
     description:
       "Un RPG clásico con combate por turnos y una profunda historia en un mundo de fantasía.",
@@ -338,7 +338,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "15",
+    id: 15,
     titulo: "ULTRAKILL",
     description:
       "Un frenético shooter retro inspirado en DOOM con acción intensa, combos y sangre en píxeles.",
@@ -358,7 +358,7 @@ export const juegos: Game[] = [
     ventas: [],
   },
   {
-    id: "16",
+    id: 16,
     titulo: "Xenoblade Chronicles",
     description:
       "Un vasto RPG de acción con historia épica, batallas en tiempo real y exploración en entornos masivos.",

@@ -14,37 +14,57 @@ const usersRouter = Router()
 
 // Endpoints usuarios --------------------------
 
-usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), (req, res) => {
+usersRouter.get("/", validate({ schema: usersQuerySchema, source: "query" }), async (req, res) => {
   const { state, role } = req.query
+  console.log("Query params:", { state, role })
+  console.log("Prisma where clause:", {
+    ...(state && { estado: state === "true" }),
+    ...(role && { permiso: role === "user" ? "user" : "admin" }),
+  })
 
-  let usuariosFiltrados: User[] = usuarios
+  try {
+    const usuarios = await prisma.usuario.findMany({
+      where: {
+        ...(state && { estado: state === "true" }),
+        ...(role && { permiso: role === "user" ? "user" : "admin" }),
+      },
+    })
 
-  if (usuariosFiltrados.length === 0) {
-    res.status(StatusCodes.NOT_FOUND).json({ error: "Ningun usuario en DB" })
-    return
+    const safeUsuarios = usuarios.map((u) => safeUser.parse(u))
+    res.json(safeUsuarios)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: "Internal server error while fetching users.",
+      details: error instanceof Error ? error.message : String(error),
+    })
   }
 
-  if (state) {
-    usuariosFiltrados = usuariosFiltrados.filter((u) => u.estado === (state === "true"))
-  }
+  // let usuariosFiltrados: User[] = usuarios
 
-  if (role) {
-    usuariosFiltrados = usuariosFiltrados.filter((u) => u.permiso === role)
-  }
+  // if (usuariosFiltrados.length === 0) {
+  //   res.status(StatusCodes.NOT_FOUND).json({ error: "Ningun usuario en DB" })
+  //   return
+  // }
 
-  // safeUser es un subconjunto de User sin password, token, estado y permiso
-  const safeUsuarios = usuariosFiltrados.map((u) => safeUser.parse(u))
+  // if (state) {
+  //   usuariosFiltrados = usuariosFiltrados.filter((u) => u.estado === (state === "true"))
+  // }
 
-  res.json(safeUsuarios)
+  // if (role) {
+  //   usuariosFiltrados = usuariosFiltrados.filter((u) => u.permiso === role)
+  // }
+
+  // safeUser es un subconjunto de User sin password y estado
+  // const safeUsuarios = usuariosFiltrados.map((u) => safeUser.parse(u))
 })
 
 usersRouter.get(
   "/:id",
   validate({ schema: userQuerySchema, source: "params" }),
   async (req, res) => {
-    const idParam = req.params.id //as z.infer<typeof userQuerySchema>
+    const idParam = req.params.id
 
-    // const usuario = usuarios.find((u) => u.id === id)
     const usuario = await prisma.usuario.findUnique({ where: { id: parseInt(idParam) } })
 
     if (!usuario) {
