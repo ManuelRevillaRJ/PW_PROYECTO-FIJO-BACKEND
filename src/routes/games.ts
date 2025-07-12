@@ -43,6 +43,11 @@ gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (r
   res.json(juegosFiltrados)
 })
 
+gamesRouter.get("/top-rated", (req, res) => {
+  const top5 = juegos.slice().sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 5);
+  res.json(top5);
+});
+
 gamesRouter.get(
   "/:id",
   validate({ schema: gameQuerySchema, source: "params" }),
@@ -59,5 +64,7 @@ gamesRouter.get(
     res.json(juego)
   }
 )
+
+
 
 export default gamesRouter
