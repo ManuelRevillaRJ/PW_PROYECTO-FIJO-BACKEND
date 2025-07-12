@@ -10,6 +10,7 @@ export const userQuerySchema = z.object({
 })
 
 export const userUpdateSchema = z.object({
+  userId: z.number(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   email: z.string().email().optional(),

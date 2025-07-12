@@ -183,6 +183,12 @@ exports.Prisma.NoticiaScalarFieldEnum = {
   activo: 'activo'
 };
 
+exports.Prisma.CarritoScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  creadoEn: 'creadoEn'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -210,7 +216,8 @@ exports.Prisma.ModelName = {
   Categoria: 'Categoria',
   Plataforma: 'Plataforma',
   JuegoPlataforma: 'JuegoPlataforma',
-  Noticia: 'Noticia'
+  Noticia: 'Noticia',
+  Carrito: 'Carrito'
 };
 
 /**

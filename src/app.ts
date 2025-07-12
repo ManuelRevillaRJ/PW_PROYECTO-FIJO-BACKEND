@@ -5,6 +5,7 @@ import sessionsRouter from "./routes/sessions"
 import usersRouter from "./routes/users"
 import debug from "./middleware/debug"
 import { PORT } from "./config"
+import cartRouter from "./routes/cart"
 
 // Para correr la app:
 // $ npm run dev
@@ -33,6 +34,8 @@ app.use("/sessions", sessionsRouter)
 app.use("/games", gamesRouter)
 // Users Endpoint
 app.use("/users", usersRouter)
+// Cart Endpoint
+app.use("/cart", cartRouter)
 
 
 app.listen(PORT, () => {

@@ -53,6 +53,11 @@ export type JuegoPlataforma = $Result.DefaultSelection<Prisma.$JuegoPlataformaPa
  * 
  */
 export type Noticia = $Result.DefaultSelection<Prisma.$NoticiaPayload>
+/**
+ * Model Carrito
+ * 
+ */
+export type Carrito = $Result.DefaultSelection<Prisma.$CarritoPayload>
 
 /**
  * Enums
@@ -275,6 +280,16 @@ export class PrismaClient<
     * ```
     */
   get noticia(): Prisma.NoticiaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.carrito`: Exposes CRUD operations for the **Carrito** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Carritos
+    * const carritos = await prisma.carrito.findMany()
+    * ```
+    */
+  get carrito(): Prisma.CarritoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -722,7 +737,8 @@ export namespace Prisma {
     Categoria: 'Categoria',
     Plataforma: 'Plataforma',
     JuegoPlataforma: 'JuegoPlataforma',
-    Noticia: 'Noticia'
+    Noticia: 'Noticia',
+    Carrito: 'Carrito'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -741,7 +757,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "usuario" | "venta" | "juego" | "calificacion" | "categoria" | "plataforma" | "juegoPlataforma" | "noticia"
+      modelProps: "usuario" | "venta" | "juego" | "calificacion" | "categoria" | "plataforma" | "juegoPlataforma" | "noticia" | "carrito"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1337,6 +1353,80 @@ export namespace Prisma {
           }
         }
       }
+      Carrito: {
+        payload: Prisma.$CarritoPayload<ExtArgs>
+        fields: Prisma.CarritoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CarritoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CarritoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          findFirst: {
+            args: Prisma.CarritoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CarritoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          findMany: {
+            args: Prisma.CarritoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>[]
+          }
+          create: {
+            args: Prisma.CarritoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          createMany: {
+            args: Prisma.CarritoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CarritoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>[]
+          }
+          delete: {
+            args: Prisma.CarritoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          update: {
+            args: Prisma.CarritoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          deleteMany: {
+            args: Prisma.CarritoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CarritoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CarritoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>[]
+          }
+          upsert: {
+            args: Prisma.CarritoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CarritoPayload>
+          }
+          aggregate: {
+            args: Prisma.CarritoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCarrito>
+          }
+          groupBy: {
+            args: Prisma.CarritoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CarritoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CarritoCountArgs<ExtArgs>
+            result: $Utils.Optional<CarritoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1429,6 +1519,7 @@ export namespace Prisma {
     plataforma?: PlataformaOmit
     juegoPlataforma?: JuegoPlataformaOmit
     noticia?: NoticiaOmit
+    carrito?: CarritoOmit
   }
 
   /* Types for Logging */
@@ -1566,12 +1657,14 @@ export namespace Prisma {
     plataformas: number
     ventas: number
     calificaciones: number
+    nCarritos: number
   }
 
   export type JuegoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     plataformas?: boolean | JuegoCountOutputTypeCountPlataformasArgs
     ventas?: boolean | JuegoCountOutputTypeCountVentasArgs
     calificaciones?: boolean | JuegoCountOutputTypeCountCalificacionesArgs
+    nCarritos?: boolean | JuegoCountOutputTypeCountNCarritosArgs
   }
 
   // Custom InputTypes
@@ -1604,6 +1697,13 @@ export namespace Prisma {
    */
   export type JuegoCountOutputTypeCountCalificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CalificacionWhereInput
+  }
+
+  /**
+   * JuegoCountOutputType without action
+   */
+  export type JuegoCountOutputTypeCountNCarritosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CarritoWhereInput
   }
 
 
@@ -1666,6 +1766,37 @@ export namespace Prisma {
    */
   export type PlataformaCountOutputTypeCountJuegosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: JuegoPlataformaWhereInput
+  }
+
+
+  /**
+   * Count Type CarritoCountOutputType
+   */
+
+  export type CarritoCountOutputType = {
+    juegos: number
+  }
+
+  export type CarritoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    juegos?: boolean | CarritoCountOutputTypeCountJuegosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CarritoCountOutputType without action
+   */
+  export type CarritoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CarritoCountOutputType
+     */
+    select?: CarritoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CarritoCountOutputType without action
+   */
+  export type CarritoCountOutputTypeCountJuegosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JuegoWhereInput
   }
 
 
@@ -1889,6 +2020,7 @@ export namespace Prisma {
     permiso?: boolean
     compras?: boolean | Usuario$comprasArgs<ExtArgs>
     calificaciones?: boolean | Usuario$calificacionesArgs<ExtArgs>
+    carrito?: boolean | Usuario$carritoArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["usuario"]>
 
@@ -1926,6 +2058,7 @@ export namespace Prisma {
   export type UsuarioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     compras?: boolean | Usuario$comprasArgs<ExtArgs>
     calificaciones?: boolean | Usuario$calificacionesArgs<ExtArgs>
+    carrito?: boolean | Usuario$carritoArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1936,6 +2069,7 @@ export namespace Prisma {
     objects: {
       compras: Prisma.$VentaPayload<ExtArgs>[]
       calificaciones: Prisma.$CalificacionPayload<ExtArgs>[]
+      carrito: Prisma.$CarritoPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2341,6 +2475,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     compras<T extends Usuario$comprasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$comprasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calificaciones<T extends Usuario$calificacionesArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$calificacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalificacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    carrito<T extends Usuario$carritoArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$carritoArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2810,6 +2945,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CalificacionScalarFieldEnum | CalificacionScalarFieldEnum[]
+  }
+
+  /**
+   * Usuario.carrito
+   */
+  export type Usuario$carritoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    where?: CarritoWhereInput
   }
 
   /**
@@ -4214,6 +4368,7 @@ export namespace Prisma {
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
     ventas?: boolean | Juego$ventasArgs<ExtArgs>
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
+    nCarritos?: boolean | Juego$nCarritosArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["juego"]>
 
@@ -4267,6 +4422,7 @@ export namespace Prisma {
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
     ventas?: boolean | Juego$ventasArgs<ExtArgs>
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
+    nCarritos?: boolean | Juego$nCarritosArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type JuegoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4283,6 +4439,7 @@ export namespace Prisma {
       plataformas: Prisma.$JuegoPlataformaPayload<ExtArgs>[]
       ventas: Prisma.$VentaPayload<ExtArgs>[]
       calificaciones: Prisma.$CalificacionPayload<ExtArgs>[]
+      nCarritos: Prisma.$CarritoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4694,6 +4851,7 @@ export namespace Prisma {
     plataformas<T extends Juego$plataformasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$plataformasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JuegoPlataformaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ventas<T extends Juego$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calificaciones<T extends Juego$calificacionesArgs<ExtArgs> = {}>(args?: Subset<T, Juego$calificacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalificacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    nCarritos<T extends Juego$nCarritosArgs<ExtArgs> = {}>(args?: Subset<T, Juego$nCarritosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5199,6 +5357,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CalificacionScalarFieldEnum | CalificacionScalarFieldEnum[]
+  }
+
+  /**
+   * Juego.nCarritos
+   */
+  export type Juego$nCarritosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    where?: CarritoWhereInput
+    orderBy?: CarritoOrderByWithRelationInput | CarritoOrderByWithRelationInput[]
+    cursor?: CarritoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CarritoScalarFieldEnum | CarritoScalarFieldEnum[]
   }
 
   /**
@@ -10544,6 +10726,1106 @@ export namespace Prisma {
 
 
   /**
+   * Model Carrito
+   */
+
+  export type AggregateCarrito = {
+    _count: CarritoCountAggregateOutputType | null
+    _avg: CarritoAvgAggregateOutputType | null
+    _sum: CarritoSumAggregateOutputType | null
+    _min: CarritoMinAggregateOutputType | null
+    _max: CarritoMaxAggregateOutputType | null
+  }
+
+  export type CarritoAvgAggregateOutputType = {
+    id: number | null
+    usuarioId: number | null
+  }
+
+  export type CarritoSumAggregateOutputType = {
+    id: number | null
+    usuarioId: number | null
+  }
+
+  export type CarritoMinAggregateOutputType = {
+    id: number | null
+    usuarioId: number | null
+    creadoEn: Date | null
+  }
+
+  export type CarritoMaxAggregateOutputType = {
+    id: number | null
+    usuarioId: number | null
+    creadoEn: Date | null
+  }
+
+  export type CarritoCountAggregateOutputType = {
+    id: number
+    usuarioId: number
+    creadoEn: number
+    _all: number
+  }
+
+
+  export type CarritoAvgAggregateInputType = {
+    id?: true
+    usuarioId?: true
+  }
+
+  export type CarritoSumAggregateInputType = {
+    id?: true
+    usuarioId?: true
+  }
+
+  export type CarritoMinAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    creadoEn?: true
+  }
+
+  export type CarritoMaxAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    creadoEn?: true
+  }
+
+  export type CarritoCountAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    creadoEn?: true
+    _all?: true
+  }
+
+  export type CarritoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Carrito to aggregate.
+     */
+    where?: CarritoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carritos to fetch.
+     */
+    orderBy?: CarritoOrderByWithRelationInput | CarritoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CarritoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carritos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carritos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Carritos
+    **/
+    _count?: true | CarritoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CarritoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CarritoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CarritoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CarritoMaxAggregateInputType
+  }
+
+  export type GetCarritoAggregateType<T extends CarritoAggregateArgs> = {
+        [P in keyof T & keyof AggregateCarrito]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCarrito[P]>
+      : GetScalarType<T[P], AggregateCarrito[P]>
+  }
+
+
+
+
+  export type CarritoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CarritoWhereInput
+    orderBy?: CarritoOrderByWithAggregationInput | CarritoOrderByWithAggregationInput[]
+    by: CarritoScalarFieldEnum[] | CarritoScalarFieldEnum
+    having?: CarritoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CarritoCountAggregateInputType | true
+    _avg?: CarritoAvgAggregateInputType
+    _sum?: CarritoSumAggregateInputType
+    _min?: CarritoMinAggregateInputType
+    _max?: CarritoMaxAggregateInputType
+  }
+
+  export type CarritoGroupByOutputType = {
+    id: number
+    usuarioId: number
+    creadoEn: Date
+    _count: CarritoCountAggregateOutputType | null
+    _avg: CarritoAvgAggregateOutputType | null
+    _sum: CarritoSumAggregateOutputType | null
+    _min: CarritoMinAggregateOutputType | null
+    _max: CarritoMaxAggregateOutputType | null
+  }
+
+  type GetCarritoGroupByPayload<T extends CarritoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CarritoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CarritoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CarritoGroupByOutputType[P]>
+            : GetScalarType<T[P], CarritoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CarritoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    creadoEn?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    juegos?: boolean | Carrito$juegosArgs<ExtArgs>
+    _count?: boolean | CarritoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["carrito"]>
+
+  export type CarritoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    creadoEn?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["carrito"]>
+
+  export type CarritoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    creadoEn?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["carrito"]>
+
+  export type CarritoSelectScalar = {
+    id?: boolean
+    usuarioId?: boolean
+    creadoEn?: boolean
+  }
+
+  export type CarritoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "usuarioId" | "creadoEn", ExtArgs["result"]["carrito"]>
+  export type CarritoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    juegos?: boolean | Carrito$juegosArgs<ExtArgs>
+    _count?: boolean | CarritoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CarritoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+  }
+  export type CarritoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+  }
+
+  export type $CarritoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Carrito"
+    objects: {
+      usuario: Prisma.$UsuarioPayload<ExtArgs>
+      juegos: Prisma.$JuegoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      usuarioId: number
+      creadoEn: Date
+    }, ExtArgs["result"]["carrito"]>
+    composites: {}
+  }
+
+  type CarritoGetPayload<S extends boolean | null | undefined | CarritoDefaultArgs> = $Result.GetResult<Prisma.$CarritoPayload, S>
+
+  type CarritoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CarritoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CarritoCountAggregateInputType | true
+    }
+
+  export interface CarritoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Carrito'], meta: { name: 'Carrito' } }
+    /**
+     * Find zero or one Carrito that matches the filter.
+     * @param {CarritoFindUniqueArgs} args - Arguments to find a Carrito
+     * @example
+     * // Get one Carrito
+     * const carrito = await prisma.carrito.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CarritoFindUniqueArgs>(args: SelectSubset<T, CarritoFindUniqueArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Carrito that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CarritoFindUniqueOrThrowArgs} args - Arguments to find a Carrito
+     * @example
+     * // Get one Carrito
+     * const carrito = await prisma.carrito.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CarritoFindUniqueOrThrowArgs>(args: SelectSubset<T, CarritoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Carrito that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoFindFirstArgs} args - Arguments to find a Carrito
+     * @example
+     * // Get one Carrito
+     * const carrito = await prisma.carrito.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CarritoFindFirstArgs>(args?: SelectSubset<T, CarritoFindFirstArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Carrito that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoFindFirstOrThrowArgs} args - Arguments to find a Carrito
+     * @example
+     * // Get one Carrito
+     * const carrito = await prisma.carrito.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CarritoFindFirstOrThrowArgs>(args?: SelectSubset<T, CarritoFindFirstOrThrowArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Carritos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Carritos
+     * const carritos = await prisma.carrito.findMany()
+     * 
+     * // Get first 10 Carritos
+     * const carritos = await prisma.carrito.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const carritoWithIdOnly = await prisma.carrito.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CarritoFindManyArgs>(args?: SelectSubset<T, CarritoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Carrito.
+     * @param {CarritoCreateArgs} args - Arguments to create a Carrito.
+     * @example
+     * // Create one Carrito
+     * const Carrito = await prisma.carrito.create({
+     *   data: {
+     *     // ... data to create a Carrito
+     *   }
+     * })
+     * 
+     */
+    create<T extends CarritoCreateArgs>(args: SelectSubset<T, CarritoCreateArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Carritos.
+     * @param {CarritoCreateManyArgs} args - Arguments to create many Carritos.
+     * @example
+     * // Create many Carritos
+     * const carrito = await prisma.carrito.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CarritoCreateManyArgs>(args?: SelectSubset<T, CarritoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Carritos and returns the data saved in the database.
+     * @param {CarritoCreateManyAndReturnArgs} args - Arguments to create many Carritos.
+     * @example
+     * // Create many Carritos
+     * const carrito = await prisma.carrito.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Carritos and only return the `id`
+     * const carritoWithIdOnly = await prisma.carrito.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CarritoCreateManyAndReturnArgs>(args?: SelectSubset<T, CarritoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Carrito.
+     * @param {CarritoDeleteArgs} args - Arguments to delete one Carrito.
+     * @example
+     * // Delete one Carrito
+     * const Carrito = await prisma.carrito.delete({
+     *   where: {
+     *     // ... filter to delete one Carrito
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CarritoDeleteArgs>(args: SelectSubset<T, CarritoDeleteArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Carrito.
+     * @param {CarritoUpdateArgs} args - Arguments to update one Carrito.
+     * @example
+     * // Update one Carrito
+     * const carrito = await prisma.carrito.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CarritoUpdateArgs>(args: SelectSubset<T, CarritoUpdateArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Carritos.
+     * @param {CarritoDeleteManyArgs} args - Arguments to filter Carritos to delete.
+     * @example
+     * // Delete a few Carritos
+     * const { count } = await prisma.carrito.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CarritoDeleteManyArgs>(args?: SelectSubset<T, CarritoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Carritos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Carritos
+     * const carrito = await prisma.carrito.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CarritoUpdateManyArgs>(args: SelectSubset<T, CarritoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Carritos and returns the data updated in the database.
+     * @param {CarritoUpdateManyAndReturnArgs} args - Arguments to update many Carritos.
+     * @example
+     * // Update many Carritos
+     * const carrito = await prisma.carrito.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Carritos and only return the `id`
+     * const carritoWithIdOnly = await prisma.carrito.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CarritoUpdateManyAndReturnArgs>(args: SelectSubset<T, CarritoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Carrito.
+     * @param {CarritoUpsertArgs} args - Arguments to update or create a Carrito.
+     * @example
+     * // Update or create a Carrito
+     * const carrito = await prisma.carrito.upsert({
+     *   create: {
+     *     // ... data to create a Carrito
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Carrito we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CarritoUpsertArgs>(args: SelectSubset<T, CarritoUpsertArgs<ExtArgs>>): Prisma__CarritoClient<$Result.GetResult<Prisma.$CarritoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Carritos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoCountArgs} args - Arguments to filter Carritos to count.
+     * @example
+     * // Count the number of Carritos
+     * const count = await prisma.carrito.count({
+     *   where: {
+     *     // ... the filter for the Carritos we want to count
+     *   }
+     * })
+    **/
+    count<T extends CarritoCountArgs>(
+      args?: Subset<T, CarritoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CarritoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Carrito.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CarritoAggregateArgs>(args: Subset<T, CarritoAggregateArgs>): Prisma.PrismaPromise<GetCarritoAggregateType<T>>
+
+    /**
+     * Group by Carrito.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarritoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CarritoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CarritoGroupByArgs['orderBy'] }
+        : { orderBy?: CarritoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CarritoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCarritoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Carrito model
+   */
+  readonly fields: CarritoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Carrito.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CarritoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    usuario<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    juegos<T extends Carrito$juegosArgs<ExtArgs> = {}>(args?: Subset<T, Carrito$juegosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JuegoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Carrito model
+   */
+  interface CarritoFieldRefs {
+    readonly id: FieldRef<"Carrito", 'Int'>
+    readonly usuarioId: FieldRef<"Carrito", 'Int'>
+    readonly creadoEn: FieldRef<"Carrito", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Carrito findUnique
+   */
+  export type CarritoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter, which Carrito to fetch.
+     */
+    where: CarritoWhereUniqueInput
+  }
+
+  /**
+   * Carrito findUniqueOrThrow
+   */
+  export type CarritoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter, which Carrito to fetch.
+     */
+    where: CarritoWhereUniqueInput
+  }
+
+  /**
+   * Carrito findFirst
+   */
+  export type CarritoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter, which Carrito to fetch.
+     */
+    where?: CarritoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carritos to fetch.
+     */
+    orderBy?: CarritoOrderByWithRelationInput | CarritoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Carritos.
+     */
+    cursor?: CarritoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carritos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carritos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Carritos.
+     */
+    distinct?: CarritoScalarFieldEnum | CarritoScalarFieldEnum[]
+  }
+
+  /**
+   * Carrito findFirstOrThrow
+   */
+  export type CarritoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter, which Carrito to fetch.
+     */
+    where?: CarritoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carritos to fetch.
+     */
+    orderBy?: CarritoOrderByWithRelationInput | CarritoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Carritos.
+     */
+    cursor?: CarritoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carritos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carritos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Carritos.
+     */
+    distinct?: CarritoScalarFieldEnum | CarritoScalarFieldEnum[]
+  }
+
+  /**
+   * Carrito findMany
+   */
+  export type CarritoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter, which Carritos to fetch.
+     */
+    where?: CarritoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carritos to fetch.
+     */
+    orderBy?: CarritoOrderByWithRelationInput | CarritoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Carritos.
+     */
+    cursor?: CarritoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carritos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carritos.
+     */
+    skip?: number
+    distinct?: CarritoScalarFieldEnum | CarritoScalarFieldEnum[]
+  }
+
+  /**
+   * Carrito create
+   */
+  export type CarritoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Carrito.
+     */
+    data: XOR<CarritoCreateInput, CarritoUncheckedCreateInput>
+  }
+
+  /**
+   * Carrito createMany
+   */
+  export type CarritoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Carritos.
+     */
+    data: CarritoCreateManyInput | CarritoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Carrito createManyAndReturn
+   */
+  export type CarritoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Carritos.
+     */
+    data: CarritoCreateManyInput | CarritoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Carrito update
+   */
+  export type CarritoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Carrito.
+     */
+    data: XOR<CarritoUpdateInput, CarritoUncheckedUpdateInput>
+    /**
+     * Choose, which Carrito to update.
+     */
+    where: CarritoWhereUniqueInput
+  }
+
+  /**
+   * Carrito updateMany
+   */
+  export type CarritoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Carritos.
+     */
+    data: XOR<CarritoUpdateManyMutationInput, CarritoUncheckedUpdateManyInput>
+    /**
+     * Filter which Carritos to update
+     */
+    where?: CarritoWhereInput
+    /**
+     * Limit how many Carritos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Carrito updateManyAndReturn
+   */
+  export type CarritoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * The data used to update Carritos.
+     */
+    data: XOR<CarritoUpdateManyMutationInput, CarritoUncheckedUpdateManyInput>
+    /**
+     * Filter which Carritos to update
+     */
+    where?: CarritoWhereInput
+    /**
+     * Limit how many Carritos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Carrito upsert
+   */
+  export type CarritoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Carrito to update in case it exists.
+     */
+    where: CarritoWhereUniqueInput
+    /**
+     * In case the Carrito found by the `where` argument doesn't exist, create a new Carrito with this data.
+     */
+    create: XOR<CarritoCreateInput, CarritoUncheckedCreateInput>
+    /**
+     * In case the Carrito was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CarritoUpdateInput, CarritoUncheckedUpdateInput>
+  }
+
+  /**
+   * Carrito delete
+   */
+  export type CarritoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+    /**
+     * Filter which Carrito to delete.
+     */
+    where: CarritoWhereUniqueInput
+  }
+
+  /**
+   * Carrito deleteMany
+   */
+  export type CarritoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Carritos to delete
+     */
+    where?: CarritoWhereInput
+    /**
+     * Limit how many Carritos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Carrito.juegos
+   */
+  export type Carrito$juegosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Juego
+     */
+    select?: JuegoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Juego
+     */
+    omit?: JuegoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JuegoInclude<ExtArgs> | null
+    where?: JuegoWhereInput
+    orderBy?: JuegoOrderByWithRelationInput | JuegoOrderByWithRelationInput[]
+    cursor?: JuegoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JuegoScalarFieldEnum | JuegoScalarFieldEnum[]
+  }
+
+  /**
+   * Carrito without action
+   */
+  export type CarritoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Carrito
+     */
+    select?: CarritoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Carrito
+     */
+    omit?: CarritoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarritoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10642,6 +11924,15 @@ export namespace Prisma {
   };
 
   export type NoticiaScalarFieldEnum = (typeof NoticiaScalarFieldEnum)[keyof typeof NoticiaScalarFieldEnum]
+
+
+  export const CarritoScalarFieldEnum: {
+    id: 'id',
+    usuarioId: 'usuarioId',
+    creadoEn: 'creadoEn'
+  };
+
+  export type CarritoScalarFieldEnum = (typeof CarritoScalarFieldEnum)[keyof typeof CarritoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -10766,6 +12057,7 @@ export namespace Prisma {
     permiso?: EnumPermisoFilter<"Usuario"> | $Enums.Permiso
     compras?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    carrito?: XOR<CarritoNullableScalarRelationFilter, CarritoWhereInput> | null
   }
 
   export type UsuarioOrderByWithRelationInput = {
@@ -10778,6 +12070,7 @@ export namespace Prisma {
     permiso?: SortOrder
     compras?: VentaOrderByRelationAggregateInput
     calificaciones?: CalificacionOrderByRelationAggregateInput
+    carrito?: CarritoOrderByWithRelationInput
   }
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -10793,6 +12086,7 @@ export namespace Prisma {
     permiso?: EnumPermisoFilter<"Usuario"> | $Enums.Permiso
     compras?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    carrito?: XOR<CarritoNullableScalarRelationFilter, CarritoWhereInput> | null
   }, "id" | "correo">
 
   export type UsuarioOrderByWithAggregationInput = {
@@ -10907,6 +12201,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaListRelationFilter
     ventas?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    nCarritos?: CarritoListRelationFilter
   }
 
   export type JuegoOrderByWithRelationInput = {
@@ -10925,6 +12220,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaOrderByRelationAggregateInput
     ventas?: VentaOrderByRelationAggregateInput
     calificaciones?: CalificacionOrderByRelationAggregateInput
+    nCarritos?: CarritoOrderByRelationAggregateInput
   }
 
   export type JuegoWhereUniqueInput = Prisma.AtLeast<{
@@ -10946,6 +12242,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaListRelationFilter
     ventas?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    nCarritos?: CarritoListRelationFilter
   }, "id">
 
   export type JuegoOrderByWithAggregationInput = {
@@ -11223,6 +12520,56 @@ export namespace Prisma {
     activo?: BoolWithAggregatesFilter<"Noticia"> | boolean
   }
 
+  export type CarritoWhereInput = {
+    AND?: CarritoWhereInput | CarritoWhereInput[]
+    OR?: CarritoWhereInput[]
+    NOT?: CarritoWhereInput | CarritoWhereInput[]
+    id?: IntFilter<"Carrito"> | number
+    usuarioId?: IntFilter<"Carrito"> | number
+    creadoEn?: DateTimeFilter<"Carrito"> | Date | string
+    usuario?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    juegos?: JuegoListRelationFilter
+  }
+
+  export type CarritoOrderByWithRelationInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    creadoEn?: SortOrder
+    usuario?: UsuarioOrderByWithRelationInput
+    juegos?: JuegoOrderByRelationAggregateInput
+  }
+
+  export type CarritoWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    usuarioId?: number
+    AND?: CarritoWhereInput | CarritoWhereInput[]
+    OR?: CarritoWhereInput[]
+    NOT?: CarritoWhereInput | CarritoWhereInput[]
+    creadoEn?: DateTimeFilter<"Carrito"> | Date | string
+    usuario?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    juegos?: JuegoListRelationFilter
+  }, "id" | "usuarioId">
+
+  export type CarritoOrderByWithAggregationInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    creadoEn?: SortOrder
+    _count?: CarritoCountOrderByAggregateInput
+    _avg?: CarritoAvgOrderByAggregateInput
+    _max?: CarritoMaxOrderByAggregateInput
+    _min?: CarritoMinOrderByAggregateInput
+    _sum?: CarritoSumOrderByAggregateInput
+  }
+
+  export type CarritoScalarWhereWithAggregatesInput = {
+    AND?: CarritoScalarWhereWithAggregatesInput | CarritoScalarWhereWithAggregatesInput[]
+    OR?: CarritoScalarWhereWithAggregatesInput[]
+    NOT?: CarritoScalarWhereWithAggregatesInput | CarritoScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Carrito"> | number
+    usuarioId?: IntWithAggregatesFilter<"Carrito"> | number
+    creadoEn?: DateTimeWithAggregatesFilter<"Carrito"> | Date | string
+  }
+
   export type UsuarioCreateInput = {
     correo: string
     password: string
@@ -11232,6 +12579,7 @@ export namespace Prisma {
     permiso?: $Enums.Permiso
     compras?: VentaCreateNestedManyWithoutUsuarioInput
     calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioUncheckedCreateInput = {
@@ -11244,6 +12592,7 @@ export namespace Prisma {
     permiso?: $Enums.Permiso
     compras?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoUncheckedCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioUpdateInput = {
@@ -11255,6 +12604,7 @@ export namespace Prisma {
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     compras?: VentaUpdateManyWithoutUsuarioNestedInput
     calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUpdateOneWithoutUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateInput = {
@@ -11267,6 +12617,7 @@ export namespace Prisma {
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     compras?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUncheckedUpdateOneWithoutUsuarioNestedInput
   }
 
   export type UsuarioCreateManyInput = {
@@ -11370,6 +12721,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUncheckedCreateInput = {
@@ -11387,6 +12739,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoUncheckedCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUpdateInput = {
@@ -11403,6 +12756,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateInput = {
@@ -11420,6 +12774,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoCreateManyInput = {
@@ -11665,6 +13020,48 @@ export namespace Prisma {
     activo?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type CarritoCreateInput = {
+    creadoEn?: Date | string
+    usuario: UsuarioCreateNestedOneWithoutCarritoInput
+    juegos?: JuegoCreateNestedManyWithoutNCarritosInput
+  }
+
+  export type CarritoUncheckedCreateInput = {
+    id?: number
+    usuarioId: number
+    creadoEn?: Date | string
+    juegos?: JuegoUncheckedCreateNestedManyWithoutNCarritosInput
+  }
+
+  export type CarritoUpdateInput = {
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UsuarioUpdateOneRequiredWithoutCarritoNestedInput
+    juegos?: JuegoUpdateManyWithoutNCarritosNestedInput
+  }
+
+  export type CarritoUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    usuarioId?: IntFieldUpdateOperationsInput | number
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+    juegos?: JuegoUncheckedUpdateManyWithoutNCarritosNestedInput
+  }
+
+  export type CarritoCreateManyInput = {
+    id?: number
+    usuarioId: number
+    creadoEn?: Date | string
+  }
+
+  export type CarritoUpdateManyMutationInput = {
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CarritoUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    usuarioId?: IntFieldUpdateOperationsInput | number
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -11713,6 +13110,11 @@ export namespace Prisma {
     every?: CalificacionWhereInput
     some?: CalificacionWhereInput
     none?: CalificacionWhereInput
+  }
+
+  export type CarritoNullableScalarRelationFilter = {
+    is?: CarritoWhereInput | null
+    isNot?: CarritoWhereInput | null
   }
 
   export type VentaOrderByRelationAggregateInput = {
@@ -11950,12 +13352,22 @@ export namespace Prisma {
     none?: JuegoPlataformaWhereInput
   }
 
+  export type CarritoListRelationFilter = {
+    every?: CarritoWhereInput
+    some?: CarritoWhereInput
+    none?: CarritoWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type JuegoPlataformaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CarritoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12189,6 +13601,34 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type CarritoCountOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    creadoEn?: SortOrder
+  }
+
+  export type CarritoAvgOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+  }
+
+  export type CarritoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    creadoEn?: SortOrder
+  }
+
+  export type CarritoMinOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    creadoEn?: SortOrder
+  }
+
+  export type CarritoSumOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+  }
+
   export type VentaCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
@@ -12203,6 +13643,12 @@ export namespace Prisma {
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
+  export type CarritoCreateNestedOneWithoutUsuarioInput = {
+    create?: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+    connectOrCreate?: CarritoCreateOrConnectWithoutUsuarioInput
+    connect?: CarritoWhereUniqueInput
+  }
+
   export type VentaUncheckedCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
@@ -12215,6 +13661,12 @@ export namespace Prisma {
     connectOrCreate?: CalificacionCreateOrConnectWithoutUsuarioInput | CalificacionCreateOrConnectWithoutUsuarioInput[]
     createMany?: CalificacionCreateManyUsuarioInputEnvelope
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+  }
+
+  export type CarritoUncheckedCreateNestedOneWithoutUsuarioInput = {
+    create?: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+    connectOrCreate?: CarritoCreateOrConnectWithoutUsuarioInput
+    connect?: CarritoWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -12257,6 +13709,16 @@ export namespace Prisma {
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
   }
 
+  export type CarritoUpdateOneWithoutUsuarioNestedInput = {
+    create?: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+    connectOrCreate?: CarritoCreateOrConnectWithoutUsuarioInput
+    upsert?: CarritoUpsertWithoutUsuarioInput
+    disconnect?: CarritoWhereInput | boolean
+    delete?: CarritoWhereInput | boolean
+    connect?: CarritoWhereUniqueInput
+    update?: XOR<XOR<CarritoUpdateToOneWithWhereWithoutUsuarioInput, CarritoUpdateWithoutUsuarioInput>, CarritoUncheckedUpdateWithoutUsuarioInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -12291,6 +13753,16 @@ export namespace Prisma {
     update?: CalificacionUpdateWithWhereUniqueWithoutUsuarioInput | CalificacionUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: CalificacionUpdateManyWithWhereWithoutUsuarioInput | CalificacionUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
+  }
+
+  export type CarritoUncheckedUpdateOneWithoutUsuarioNestedInput = {
+    create?: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+    connectOrCreate?: CarritoCreateOrConnectWithoutUsuarioInput
+    upsert?: CarritoUpsertWithoutUsuarioInput
+    disconnect?: CarritoWhereInput | boolean
+    delete?: CarritoWhereInput | boolean
+    connect?: CarritoWhereUniqueInput
+    update?: XOR<XOR<CarritoUpdateToOneWithWhereWithoutUsuarioInput, CarritoUpdateWithoutUsuarioInput>, CarritoUncheckedUpdateWithoutUsuarioInput>
   }
 
   export type UsuarioCreateNestedOneWithoutComprasInput = {
@@ -12364,6 +13836,12 @@ export namespace Prisma {
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
+  export type CarritoCreateNestedManyWithoutJuegosInput = {
+    create?: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput> | CarritoCreateWithoutJuegosInput[] | CarritoUncheckedCreateWithoutJuegosInput[]
+    connectOrCreate?: CarritoCreateOrConnectWithoutJuegosInput | CarritoCreateOrConnectWithoutJuegosInput[]
+    connect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+  }
+
   export type JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput = {
     create?: XOR<JuegoPlataformaCreateWithoutJuegoInput, JuegoPlataformaUncheckedCreateWithoutJuegoInput> | JuegoPlataformaCreateWithoutJuegoInput[] | JuegoPlataformaUncheckedCreateWithoutJuegoInput[]
     connectOrCreate?: JuegoPlataformaCreateOrConnectWithoutJuegoInput | JuegoPlataformaCreateOrConnectWithoutJuegoInput[]
@@ -12383,6 +13861,12 @@ export namespace Prisma {
     connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
     createMany?: CalificacionCreateManyJuegoInputEnvelope
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+  }
+
+  export type CarritoUncheckedCreateNestedManyWithoutJuegosInput = {
+    create?: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput> | CarritoCreateWithoutJuegosInput[] | CarritoUncheckedCreateWithoutJuegosInput[]
+    connectOrCreate?: CarritoCreateOrConnectWithoutJuegosInput | CarritoCreateOrConnectWithoutJuegosInput[]
+    connect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
   }
 
   export type JuegoUpdateimagenesInput = {
@@ -12444,6 +13928,19 @@ export namespace Prisma {
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
   }
 
+  export type CarritoUpdateManyWithoutJuegosNestedInput = {
+    create?: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput> | CarritoCreateWithoutJuegosInput[] | CarritoUncheckedCreateWithoutJuegosInput[]
+    connectOrCreate?: CarritoCreateOrConnectWithoutJuegosInput | CarritoCreateOrConnectWithoutJuegosInput[]
+    upsert?: CarritoUpsertWithWhereUniqueWithoutJuegosInput | CarritoUpsertWithWhereUniqueWithoutJuegosInput[]
+    set?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    disconnect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    delete?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    connect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    update?: CarritoUpdateWithWhereUniqueWithoutJuegosInput | CarritoUpdateWithWhereUniqueWithoutJuegosInput[]
+    updateMany?: CarritoUpdateManyWithWhereWithoutJuegosInput | CarritoUpdateManyWithWhereWithoutJuegosInput[]
+    deleteMany?: CarritoScalarWhereInput | CarritoScalarWhereInput[]
+  }
+
   export type JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput = {
     create?: XOR<JuegoPlataformaCreateWithoutJuegoInput, JuegoPlataformaUncheckedCreateWithoutJuegoInput> | JuegoPlataformaCreateWithoutJuegoInput[] | JuegoPlataformaUncheckedCreateWithoutJuegoInput[]
     connectOrCreate?: JuegoPlataformaCreateOrConnectWithoutJuegoInput | JuegoPlataformaCreateOrConnectWithoutJuegoInput[]
@@ -12484,6 +13981,19 @@ export namespace Prisma {
     update?: CalificacionUpdateWithWhereUniqueWithoutJuegoInput | CalificacionUpdateWithWhereUniqueWithoutJuegoInput[]
     updateMany?: CalificacionUpdateManyWithWhereWithoutJuegoInput | CalificacionUpdateManyWithWhereWithoutJuegoInput[]
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
+  }
+
+  export type CarritoUncheckedUpdateManyWithoutJuegosNestedInput = {
+    create?: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput> | CarritoCreateWithoutJuegosInput[] | CarritoUncheckedCreateWithoutJuegosInput[]
+    connectOrCreate?: CarritoCreateOrConnectWithoutJuegosInput | CarritoCreateOrConnectWithoutJuegosInput[]
+    upsert?: CarritoUpsertWithWhereUniqueWithoutJuegosInput | CarritoUpsertWithWhereUniqueWithoutJuegosInput[]
+    set?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    disconnect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    delete?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    connect?: CarritoWhereUniqueInput | CarritoWhereUniqueInput[]
+    update?: CarritoUpdateWithWhereUniqueWithoutJuegosInput | CarritoUpdateWithWhereUniqueWithoutJuegosInput[]
+    updateMany?: CarritoUpdateManyWithWhereWithoutJuegosInput | CarritoUpdateManyWithWhereWithoutJuegosInput[]
+    deleteMany?: CarritoScalarWhereInput | CarritoScalarWhereInput[]
   }
 
   export type JuegoCreateNestedOneWithoutCalificacionesInput = {
@@ -12624,6 +14134,58 @@ export namespace Prisma {
     upsert?: PlataformaUpsertWithoutJuegosInput
     connect?: PlataformaWhereUniqueInput
     update?: XOR<XOR<PlataformaUpdateToOneWithWhereWithoutJuegosInput, PlataformaUpdateWithoutJuegosInput>, PlataformaUncheckedUpdateWithoutJuegosInput>
+  }
+
+  export type UsuarioCreateNestedOneWithoutCarritoInput = {
+    create?: XOR<UsuarioCreateWithoutCarritoInput, UsuarioUncheckedCreateWithoutCarritoInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutCarritoInput
+    connect?: UsuarioWhereUniqueInput
+  }
+
+  export type JuegoCreateNestedManyWithoutNCarritosInput = {
+    create?: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput> | JuegoCreateWithoutNCarritosInput[] | JuegoUncheckedCreateWithoutNCarritosInput[]
+    connectOrCreate?: JuegoCreateOrConnectWithoutNCarritosInput | JuegoCreateOrConnectWithoutNCarritosInput[]
+    connect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+  }
+
+  export type JuegoUncheckedCreateNestedManyWithoutNCarritosInput = {
+    create?: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput> | JuegoCreateWithoutNCarritosInput[] | JuegoUncheckedCreateWithoutNCarritosInput[]
+    connectOrCreate?: JuegoCreateOrConnectWithoutNCarritosInput | JuegoCreateOrConnectWithoutNCarritosInput[]
+    connect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+  }
+
+  export type UsuarioUpdateOneRequiredWithoutCarritoNestedInput = {
+    create?: XOR<UsuarioCreateWithoutCarritoInput, UsuarioUncheckedCreateWithoutCarritoInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutCarritoInput
+    upsert?: UsuarioUpsertWithoutCarritoInput
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutCarritoInput, UsuarioUpdateWithoutCarritoInput>, UsuarioUncheckedUpdateWithoutCarritoInput>
+  }
+
+  export type JuegoUpdateManyWithoutNCarritosNestedInput = {
+    create?: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput> | JuegoCreateWithoutNCarritosInput[] | JuegoUncheckedCreateWithoutNCarritosInput[]
+    connectOrCreate?: JuegoCreateOrConnectWithoutNCarritosInput | JuegoCreateOrConnectWithoutNCarritosInput[]
+    upsert?: JuegoUpsertWithWhereUniqueWithoutNCarritosInput | JuegoUpsertWithWhereUniqueWithoutNCarritosInput[]
+    set?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    disconnect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    delete?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    connect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    update?: JuegoUpdateWithWhereUniqueWithoutNCarritosInput | JuegoUpdateWithWhereUniqueWithoutNCarritosInput[]
+    updateMany?: JuegoUpdateManyWithWhereWithoutNCarritosInput | JuegoUpdateManyWithWhereWithoutNCarritosInput[]
+    deleteMany?: JuegoScalarWhereInput | JuegoScalarWhereInput[]
+  }
+
+  export type JuegoUncheckedUpdateManyWithoutNCarritosNestedInput = {
+    create?: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput> | JuegoCreateWithoutNCarritosInput[] | JuegoUncheckedCreateWithoutNCarritosInput[]
+    connectOrCreate?: JuegoCreateOrConnectWithoutNCarritosInput | JuegoCreateOrConnectWithoutNCarritosInput[]
+    upsert?: JuegoUpsertWithWhereUniqueWithoutNCarritosInput | JuegoUpsertWithWhereUniqueWithoutNCarritosInput[]
+    set?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    disconnect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    delete?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    connect?: JuegoWhereUniqueInput | JuegoWhereUniqueInput[]
+    update?: JuegoUpdateWithWhereUniqueWithoutNCarritosInput | JuegoUpdateWithWhereUniqueWithoutNCarritosInput[]
+    updateMany?: JuegoUpdateManyWithWhereWithoutNCarritosInput | JuegoUpdateManyWithWhereWithoutNCarritosInput[]
+    deleteMany?: JuegoScalarWhereInput | JuegoScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -12856,6 +14418,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CarritoCreateWithoutUsuarioInput = {
+    creadoEn?: Date | string
+    juegos?: JuegoCreateNestedManyWithoutNCarritosInput
+  }
+
+  export type CarritoUncheckedCreateWithoutUsuarioInput = {
+    id?: number
+    creadoEn?: Date | string
+    juegos?: JuegoUncheckedCreateNestedManyWithoutNCarritosInput
+  }
+
+  export type CarritoCreateOrConnectWithoutUsuarioInput = {
+    where: CarritoWhereUniqueInput
+    create: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+  }
+
   export type VentaUpsertWithWhereUniqueWithoutUsuarioInput = {
     where: VentaWhereUniqueInput
     update: XOR<VentaUpdateWithoutUsuarioInput, VentaUncheckedUpdateWithoutUsuarioInput>
@@ -12911,6 +14489,28 @@ export namespace Prisma {
     usuario_id?: IntFilter<"Calificacion"> | number
   }
 
+  export type CarritoUpsertWithoutUsuarioInput = {
+    update: XOR<CarritoUpdateWithoutUsuarioInput, CarritoUncheckedUpdateWithoutUsuarioInput>
+    create: XOR<CarritoCreateWithoutUsuarioInput, CarritoUncheckedCreateWithoutUsuarioInput>
+    where?: CarritoWhereInput
+  }
+
+  export type CarritoUpdateToOneWithWhereWithoutUsuarioInput = {
+    where?: CarritoWhereInput
+    data: XOR<CarritoUpdateWithoutUsuarioInput, CarritoUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type CarritoUpdateWithoutUsuarioInput = {
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+    juegos?: JuegoUpdateManyWithoutNCarritosNestedInput
+  }
+
+  export type CarritoUncheckedUpdateWithoutUsuarioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+    juegos?: JuegoUncheckedUpdateManyWithoutNCarritosNestedInput
+  }
+
   export type UsuarioCreateWithoutComprasInput = {
     correo: string
     password: string
@@ -12919,6 +14519,7 @@ export namespace Prisma {
     estado: boolean
     permiso?: $Enums.Permiso
     calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutComprasInput = {
@@ -12930,6 +14531,7 @@ export namespace Prisma {
     estado: boolean
     permiso?: $Enums.Permiso
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoUncheckedCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutComprasInput = {
@@ -12950,6 +14552,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     plataformas?: JuegoPlataformaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUncheckedCreateWithoutVentasInput = {
@@ -12966,6 +14569,7 @@ export namespace Prisma {
     videoURL?: string | null
     plataformas?: JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoUncheckedCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoCreateOrConnectWithoutVentasInput = {
@@ -12992,6 +14596,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUpdateOneWithoutUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutComprasInput = {
@@ -13003,6 +14608,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUncheckedUpdateOneWithoutUsuarioNestedInput
   }
 
   export type JuegoUpsertWithoutVentasInput = {
@@ -13029,6 +14635,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     plataformas?: JuegoPlataformaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutVentasInput = {
@@ -13045,6 +14652,7 @@ export namespace Prisma {
     videoURL?: NullableStringFieldUpdateOperationsInput | string | null
     plataformas?: JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type CategoriaCreateWithoutJuegosInput = {
@@ -13127,6 +14735,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CarritoCreateWithoutJuegosInput = {
+    creadoEn?: Date | string
+    usuario: UsuarioCreateNestedOneWithoutCarritoInput
+  }
+
+  export type CarritoUncheckedCreateWithoutJuegosInput = {
+    id?: number
+    usuarioId: number
+    creadoEn?: Date | string
+  }
+
+  export type CarritoCreateOrConnectWithoutJuegosInput = {
+    where: CarritoWhereUniqueInput
+    create: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput>
+  }
+
   export type CategoriaUpsertWithoutJuegosInput = {
     update: XOR<CategoriaUpdateWithoutJuegosInput, CategoriaUncheckedUpdateWithoutJuegosInput>
     create: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
@@ -13203,6 +14827,31 @@ export namespace Prisma {
     data: XOR<CalificacionUpdateManyMutationInput, CalificacionUncheckedUpdateManyWithoutJuegoInput>
   }
 
+  export type CarritoUpsertWithWhereUniqueWithoutJuegosInput = {
+    where: CarritoWhereUniqueInput
+    update: XOR<CarritoUpdateWithoutJuegosInput, CarritoUncheckedUpdateWithoutJuegosInput>
+    create: XOR<CarritoCreateWithoutJuegosInput, CarritoUncheckedCreateWithoutJuegosInput>
+  }
+
+  export type CarritoUpdateWithWhereUniqueWithoutJuegosInput = {
+    where: CarritoWhereUniqueInput
+    data: XOR<CarritoUpdateWithoutJuegosInput, CarritoUncheckedUpdateWithoutJuegosInput>
+  }
+
+  export type CarritoUpdateManyWithWhereWithoutJuegosInput = {
+    where: CarritoScalarWhereInput
+    data: XOR<CarritoUpdateManyMutationInput, CarritoUncheckedUpdateManyWithoutJuegosInput>
+  }
+
+  export type CarritoScalarWhereInput = {
+    AND?: CarritoScalarWhereInput | CarritoScalarWhereInput[]
+    OR?: CarritoScalarWhereInput[]
+    NOT?: CarritoScalarWhereInput | CarritoScalarWhereInput[]
+    id?: IntFilter<"Carrito"> | number
+    usuarioId?: IntFilter<"Carrito"> | number
+    creadoEn?: DateTimeFilter<"Carrito"> | Date | string
+  }
+
   export type JuegoCreateWithoutCalificacionesInput = {
     titulo: string
     descripcion: string
@@ -13216,6 +14865,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     plataformas?: JuegoPlataformaCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUncheckedCreateWithoutCalificacionesInput = {
@@ -13232,6 +14882,7 @@ export namespace Prisma {
     videoURL?: string | null
     plataformas?: JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoUncheckedCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoCreateOrConnectWithoutCalificacionesInput = {
@@ -13247,6 +14898,7 @@ export namespace Prisma {
     estado: boolean
     permiso?: $Enums.Permiso
     compras?: VentaCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutCalificacionesInput = {
@@ -13258,6 +14910,7 @@ export namespace Prisma {
     estado: boolean
     permiso?: $Enums.Permiso
     compras?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
+    carrito?: CarritoUncheckedCreateNestedOneWithoutUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutCalificacionesInput = {
@@ -13289,6 +14942,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     plataformas?: JuegoPlataformaUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutCalificacionesInput = {
@@ -13305,6 +14959,7 @@ export namespace Prisma {
     videoURL?: NullableStringFieldUpdateOperationsInput | string | null
     plataformas?: JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type UsuarioUpsertWithoutCalificacionesInput = {
@@ -13326,6 +14981,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     compras?: VentaUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUpdateOneWithoutUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutCalificacionesInput = {
@@ -13337,6 +14993,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
     compras?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
+    carrito?: CarritoUncheckedUpdateOneWithoutUsuarioNestedInput
   }
 
   export type JuegoCreateWithoutCategoriaInput = {
@@ -13352,6 +15009,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUncheckedCreateWithoutCategoriaInput = {
@@ -13368,6 +15026,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoUncheckedCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoCreateOrConnectWithoutCategoriaInput = {
@@ -13460,6 +15119,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoUncheckedCreateWithoutPlataformasInput = {
@@ -13476,6 +15136,7 @@ export namespace Prisma {
     videoURL?: string | null
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    nCarritos?: CarritoUncheckedCreateNestedManyWithoutJuegosInput
   }
 
   export type JuegoCreateOrConnectWithoutPlataformasInput = {
@@ -13521,6 +15182,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutPlataformasInput = {
@@ -13537,6 +15199,7 @@ export namespace Prisma {
     videoURL?: NullableStringFieldUpdateOperationsInput | string | null
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type PlataformaUpsertWithoutJuegosInput = {
@@ -13557,6 +15220,122 @@ export namespace Prisma {
   export type PlataformaUncheckedUpdateWithoutJuegosInput = {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UsuarioCreateWithoutCarritoInput = {
+    correo: string
+    password: string
+    nombre: string
+    token: string
+    estado: boolean
+    permiso?: $Enums.Permiso
+    compras?: VentaCreateNestedManyWithoutUsuarioInput
+    calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutCarritoInput = {
+    id?: number
+    correo: string
+    password: string
+    nombre: string
+    token: string
+    estado: boolean
+    permiso?: $Enums.Permiso
+    compras?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutCarritoInput = {
+    where: UsuarioWhereUniqueInput
+    create: XOR<UsuarioCreateWithoutCarritoInput, UsuarioUncheckedCreateWithoutCarritoInput>
+  }
+
+  export type JuegoCreateWithoutNCarritosInput = {
+    titulo: string
+    descripcion: string
+    precio: number
+    oferta: boolean
+    rating: number
+    estado: boolean
+    cover: string
+    imagenes?: JuegoCreateimagenesInput | string[]
+    videoURL?: string | null
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
+    plataformas?: JuegoPlataformaCreateNestedManyWithoutJuegoInput
+    ventas?: VentaCreateNestedManyWithoutJuegoInput
+    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+  }
+
+  export type JuegoUncheckedCreateWithoutNCarritosInput = {
+    id?: number
+    titulo: string
+    descripcion: string
+    precio: number
+    oferta: boolean
+    rating: number
+    estado: boolean
+    categoria_id: number
+    cover: string
+    imagenes?: JuegoCreateimagenesInput | string[]
+    videoURL?: string | null
+    plataformas?: JuegoPlataformaUncheckedCreateNestedManyWithoutJuegoInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+  }
+
+  export type JuegoCreateOrConnectWithoutNCarritosInput = {
+    where: JuegoWhereUniqueInput
+    create: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput>
+  }
+
+  export type UsuarioUpsertWithoutCarritoInput = {
+    update: XOR<UsuarioUpdateWithoutCarritoInput, UsuarioUncheckedUpdateWithoutCarritoInput>
+    create: XOR<UsuarioCreateWithoutCarritoInput, UsuarioUncheckedCreateWithoutCarritoInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutCarritoInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutCarritoInput, UsuarioUncheckedUpdateWithoutCarritoInput>
+  }
+
+  export type UsuarioUpdateWithoutCarritoInput = {
+    correo?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
+    compras?: VentaUpdateManyWithoutUsuarioNestedInput
+    calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutCarritoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    correo?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    permiso?: EnumPermisoFieldUpdateOperationsInput | $Enums.Permiso
+    compras?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type JuegoUpsertWithWhereUniqueWithoutNCarritosInput = {
+    where: JuegoWhereUniqueInput
+    update: XOR<JuegoUpdateWithoutNCarritosInput, JuegoUncheckedUpdateWithoutNCarritosInput>
+    create: XOR<JuegoCreateWithoutNCarritosInput, JuegoUncheckedCreateWithoutNCarritosInput>
+  }
+
+  export type JuegoUpdateWithWhereUniqueWithoutNCarritosInput = {
+    where: JuegoWhereUniqueInput
+    data: XOR<JuegoUpdateWithoutNCarritosInput, JuegoUncheckedUpdateWithoutNCarritosInput>
+  }
+
+  export type JuegoUpdateManyWithWhereWithoutNCarritosInput = {
+    where: JuegoScalarWhereInput
+    data: XOR<JuegoUpdateManyMutationInput, JuegoUncheckedUpdateManyWithoutNCarritosInput>
   }
 
   export type VentaCreateManyUsuarioInput = {
@@ -13691,6 +15470,23 @@ export namespace Prisma {
     usuario_id?: IntFieldUpdateOperationsInput | number
   }
 
+  export type CarritoUpdateWithoutJuegosInput = {
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UsuarioUpdateOneRequiredWithoutCarritoNestedInput
+  }
+
+  export type CarritoUncheckedUpdateWithoutJuegosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    usuarioId?: IntFieldUpdateOperationsInput | number
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CarritoUncheckedUpdateManyWithoutJuegosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    usuarioId?: IntFieldUpdateOperationsInput | number
+    creadoEn?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type JuegoCreateManyCategoriaInput = {
     id?: number
     titulo: string
@@ -13717,6 +15513,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutCategoriaInput = {
@@ -13733,6 +15530,7 @@ export namespace Prisma {
     plataformas?: JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    nCarritos?: CarritoUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type JuegoUncheckedUpdateManyWithoutCategoriaInput = {
@@ -13762,6 +15560,53 @@ export namespace Prisma {
 
   export type JuegoPlataformaUncheckedUpdateManyWithoutPlataformaInput = {
     juegoId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type JuegoUpdateWithoutNCarritosInput = {
+    titulo?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    precio?: FloatFieldUpdateOperationsInput | number
+    oferta?: BoolFieldUpdateOperationsInput | boolean
+    rating?: FloatFieldUpdateOperationsInput | number
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    cover?: StringFieldUpdateOperationsInput | string
+    imagenes?: JuegoUpdateimagenesInput | string[]
+    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
+    plataformas?: JuegoPlataformaUpdateManyWithoutJuegoNestedInput
+    ventas?: VentaUpdateManyWithoutJuegoNestedInput
+    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+  }
+
+  export type JuegoUncheckedUpdateWithoutNCarritosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titulo?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    precio?: FloatFieldUpdateOperationsInput | number
+    oferta?: BoolFieldUpdateOperationsInput | boolean
+    rating?: FloatFieldUpdateOperationsInput | number
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    categoria_id?: IntFieldUpdateOperationsInput | number
+    cover?: StringFieldUpdateOperationsInput | string
+    imagenes?: JuegoUpdateimagenesInput | string[]
+    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    plataformas?: JuegoPlataformaUncheckedUpdateManyWithoutJuegoNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+  }
+
+  export type JuegoUncheckedUpdateManyWithoutNCarritosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titulo?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    precio?: FloatFieldUpdateOperationsInput | number
+    oferta?: BoolFieldUpdateOperationsInput | boolean
+    rating?: FloatFieldUpdateOperationsInput | number
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    categoria_id?: IntFieldUpdateOperationsInput | number
+    cover?: StringFieldUpdateOperationsInput | string
+    imagenes?: JuegoUpdateimagenesInput | string[]
+    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

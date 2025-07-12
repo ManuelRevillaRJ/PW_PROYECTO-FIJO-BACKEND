@@ -6,6 +6,13 @@
 // npx prisma migrate dev --name init
 // https://www.prisma.io/docs/getting-started/quickstart-sqlite
 
+// Comandos:
+// $ npx prisma migrate dev --name <nombre-migracion-nueva>
+// -> Para actualizar esquema en tu DB local.
+
+// $ npx prisma studio
+// -> Para ver la GUI con la DB.
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma/client"
@@ -26,6 +33,7 @@ model Usuario {
   permiso        Permiso        @default(user)
   compras        Venta[]
   calificaciones Calificacion[]
+  carrito        Carrito?
 }
 
 enum Permiso {
@@ -60,6 +68,7 @@ model Juego {
   cover          String
   imagenes       String[]
   videoURL       String?
+  nCarritos      Carrito[]         @relation("JuegosEnCarrito")
 }
 
 model Calificacion {
@@ -98,4 +107,12 @@ model Noticia {
   titulo String
   texto  String
   activo Boolean
+}
+
+model Carrito {
+  id        Int      @id @default(autoincrement())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int      @unique
+  juegos    Juego[]  @relation("JuegosEnCarrito")
+  creadoEn  DateTime @default(now())
 }

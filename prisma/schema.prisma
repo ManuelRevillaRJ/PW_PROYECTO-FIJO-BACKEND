@@ -6,6 +6,16 @@
 // npx prisma migrate dev --name init
 // https://www.prisma.io/docs/getting-started/quickstart-sqlite
 
+// Comandos:
+// $ npx prisma migrate dev --name <nombre-migracion-nueva>
+// -> Para actualizar esquema en tu DB local.
+
+// $ npx prisma studio
+// -> Para ver la GUI con la DB.
+
+
+
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma/client"
@@ -17,15 +27,16 @@ datasource db {
 }
 
 model Usuario {
-  id Int @id @default(autoincrement())
-  correo String @unique
-  password String
-  nombre String
-  token String
-  estado Boolean
-  permiso Permiso @default(user)
-  compras Venta[]
+  id             Int            @id @default(autoincrement())
+  correo         String         @unique
+  password       String
+  nombre         String
+  token          String
+  estado         Boolean
+  permiso        Permiso        @default(user)
+  compras        Venta[]
   calificaciones Calificacion[]
+  carrito        Carrito?
 }
 
 enum Permiso {
@@ -34,81 +45,77 @@ enum Permiso {
 }
 
 model Venta {
-  id Int @id @default(autoincrement())
-  fecha DateTime @default(now())
-  usuario Usuario @relation(fields: [usuario_id], references: [id])
-  usuario_id Int
-  juego Juego @relation(fields: [juego_id], references: [id])
-  juego_id Int
-  codigo String
+  id           Int      @id @default(autoincrement())
+  fecha        DateTime @default(now())
+  usuario      Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id   Int
+  juego        Juego    @relation(fields: [juego_id], references: [id])
+  juego_id     Int
+  codigo       String
   monto_pagado Float
 }
 
 model Juego {
-  id Int @id @default(autoincrement())
-  titulo String
-  descripcion String
-  precio Float
-  oferta Boolean
-  rating Float
-  estado Boolean
-  categoria Categoria @relation(fields: [categoria_id], references: [id])
-  categoria_id Int
-  plataformas JuegoPlataforma[]
-  ventas Venta[]
+  id             Int               @id @default(autoincrement())
+  titulo         String
+  descripcion    String
+  precio         Float
+  oferta         Boolean
+  rating         Float
+  estado         Boolean
+  categoria      Categoria         @relation(fields: [categoria_id], references: [id])
+  categoria_id   Int
+  plataformas    JuegoPlataforma[]
+  ventas         Venta[]
   calificaciones Calificacion[]
-  cover String
-  imagenes String[]
-  videoURL String?
+  cover          String
+  imagenes       String[]
+  videoURL       String?
+  nCarritos      Carrito[]         @relation("JuegosEnCarrito")
 }
 
 model Calificacion {
-  id Int @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   valoracion Float
   comentario String
-  juego Juego @relation(fields: [juego_id], references: [id])
-  juego_id Int
-  usuario Usuario @relation(fields: [usuario_id], references: [id])
+  juego      Juego   @relation(fields: [juego_id], references: [id])
+  juego_id   Int
+  usuario    Usuario @relation(fields: [usuario_id], references: [id])
   usuario_id Int
 }
 
 model Categoria {
-  id Int @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   nombre String
   juegos Juego[]
 }
 
 model Plataforma {
-  id Int @id @default(autoincrement())
+  id     Int               @id @default(autoincrement())
   nombre String
   juegos JuegoPlataforma[]
 }
 
 model JuegoPlataforma {
-  juego Juego @relation(fields: [juegoId], references: [id])
-  juegoId Int
-  plataforma Plataforma @relation(fields: [plataformaId], references: [id])
+  juego        Juego      @relation(fields: [juegoId], references: [id])
+  juegoId      Int
+  plataforma   Plataforma @relation(fields: [plataformaId], references: [id])
   plataformaId Int
 
   @@id([juegoId, plataformaId])
 }
 
 model Noticia {
-  id Int @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   titulo String
-  texto String
+  texto  String
   activo Boolean
 }
 
 model Carrito {
-  id         Int      @id @default(autoincrement())
-  usuario    Usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id Int
-  juego      Juego    @relation(fields: [juego_id], references: [id])
-  juego_id   Int
-  cantidad   Int
-  agregadoEn DateTime @default(now())
-
-  @@unique([usuario_id, juego_id])
+  id        Int      @id @default(autoincrement())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int      @unique
+  juegos    Juego[]  @relation("JuegosEnCarrito")
+  creadoEn  DateTime @default(now())
 }
-

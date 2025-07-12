@@ -14,8 +14,10 @@ function validate({ schema, source }: validateProps) {
 
       if (parsed.success) {
         req[source] = parsed.data
+        console.log(parsed.data)
         return next()
       } else {
+        console.log("Invalid data")
         res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid data" })
       }
     } catch (error) {

@@ -9,12 +9,10 @@ import {
   signupSchema,
 } from "../schemas/sessionSchemas"
 import { usuarios } from "../data/usuarios"
-import { API_KEY, JWT_SECRET, SENDER } from "../config"
+import { api, JWT_SECRET, SENDER, tokenOptions } from "../config"
 import { StatusCodes } from "http-status-codes"
 import { safeUser, User } from "../types/types"
-
-const api = SMTP2GOApi(API_KEY)
-
+import prisma from "../db/prismaClient"
 
 const sessionsRouter = Router()
 
@@ -59,32 +57,35 @@ sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }
   res.status(StatusCodes.CREATED).json({ token: token })
 })
 
-sessionsRouter.post("/login", validate({ schema: loginSchema, source: "body" }), (req, res) => {
-  const { correo, password } = req.body
+sessionsRouter.post(
+  "/login",
+  validate({ schema: loginSchema, source: "body" }),
+  async (req, res) => {
+    const { correo, password } = req.body
 
-  const foundUser = usuarios.find((u) => u.correo === correo)
+    // const foundUser = usuarios.find((u) => u.correo === correo)
+    const foundUser = await prisma.usuario.findUnique({ where: { correo: correo } })
 
-  if (!foundUser) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no existe con este correo" })
-    return
+    if (!foundUser) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no existe con este correo" })
+      return
+    }
+
+    if (foundUser.password !== password) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: "Credenciales invalidas" })
+      return
+    }
+
+    // TODO: Pasos:
+    // 1. Comparar password enviado con el hasheado en la DB usando bcrypt
+    // 2. Si es incorrecto devolver error
+
+    const usuario = safeUser.parse(foundUser)
+    const token = jwt.sign(usuario, JWT_SECRET)
+
+    res.status(StatusCodes.OK).json({ token: token })
   }
-
-  if (foundUser.password !== password) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: "Contraseña incorrecta" })
-    return
-  }
-
-  // TODO: Pasos:
-  // 1. Comparar password enviado con el hasheado en la DB usando bcrypt
-  // 2. Si es incorrecto devolver error
-  // 3. Generar JWT (token) del usuario y actualizarlo en la DB
-  // 4. Devolver informacion del usuario y respuesta exitosa
-
-  const usuario = safeUser.parse(foundUser)
-  const token = jwt.sign(usuario, JWT_SECRET)
-
-  res.status(StatusCodes.OK).json({ token: token })
-})
+)
 
 sessionsRouter.post("/logout", validate({ schema: logoutSchema, source: "body" }), (req, res) => {
   const { correo } = req.body
