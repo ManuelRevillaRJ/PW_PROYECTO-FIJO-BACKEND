@@ -1,9 +1,11 @@
-import { juegos } from "../data/juegos"
-import { usuarios } from "../data/usuarios"
-import prisma from "./prismaClient"
+import { juegos } from "../data/juegos";
+import { usuarios } from "../data/usuarios";
+import prisma from "./prismaClient";
+import { listaCategorias } from "../data/catsPlats";
+import { listaPlataformas } from "../data/catsPlats";
 
 async function main() {
-  await prisma.usuario.deleteMany()
+  await prisma.usuario.deleteMany();
   for (const user of usuarios) {
     await prisma.usuario.create({
       data: {
@@ -14,9 +16,11 @@ async function main() {
         permiso: user.permiso,
         token: user.token,
       },
-    })
+    });
   }
-  console.log("Initial users created.")
+  
+
+  console.log("Initial users created.");
 
   // await prisma.juego.deleteMany()
   // for (const game of juegos) {
@@ -40,10 +44,9 @@ async function main() {
   // }
   // console.log("Initial games created.")
 }
-
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
-  .finally(() => prisma.$disconnect())
+  .finally(() => prisma.$disconnect());

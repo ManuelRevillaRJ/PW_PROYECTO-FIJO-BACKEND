@@ -23,7 +23,7 @@ export const juegos: Game[] = [
     ventas: [
       {
         id: 1,
-        fecha: Date.now() - 3 * 24 * 60 * 60 * 1000, // 3 days ago
+        fecha: Date.now() - 3 * 24 * 60 * 60 * 1000,
         usuario_id: "1",
         juego_id: "1",
         codigo: "SALE-XYZ123",
@@ -31,7 +31,7 @@ export const juegos: Game[] = [
       },
       {
         id: 2,
-        fecha: Date.now() - 10 * 24 * 60 * 60 * 1000, // 10 days ago
+        fecha: Date.now() - 10 * 24 * 60 * 60 * 1000,
         usuario_id: "1",
         juego_id: "1",
         codigo: "SALE-ABC789",
@@ -39,7 +39,7 @@ export const juegos: Game[] = [
       },
       {
         id: 3,
-        fecha: Date.now() - 1 * 24 * 60 * 60 * 1000, // Yesterday
+        fecha: Date.now() - 1 * 24 * 60 * 60 * 1000,
         usuario_id: "1",
         juego_id: "1",
         codigo: "SALE-QWE456",
@@ -47,7 +47,7 @@ export const juegos: Game[] = [
       },
       {
         id: 4,
-        fecha: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30 days ago
+        fecha: Date.now() - 30 * 24 * 60 * 60 * 1000,
         usuario_id: "1",
         juego_id: "1",
         codigo: "SALE-LMN321",
@@ -55,7 +55,7 @@ export const juegos: Game[] = [
       },
       {
         id: 5,
-        fecha: Date.now(), // Today
+        fecha: Date.now(),
         usuario_id: "1",
         juego_id: "1",
         codigo: "SALE-JKL654",
@@ -85,7 +85,7 @@ export const juegos: Game[] = [
     ventas: [
       {
         id: 1,
-        fecha: Date.now() - 3 * 24 * 60 * 60 * 1000, // 3 days ago
+        fecha: Date.now() - 3 * 24 * 60 * 60 * 1000,
         usuario_id: "1",
         juego_id: "2",
         codigo: "SALE-XYZ123",
@@ -194,6 +194,26 @@ export const juegos: Game[] = [
     plataformas: ["Windows", "PS5"],
     ventas: [],
   },
+  {
+    id: 8,
+    titulo: "Elden Ring",
+    description:
+      "Un RPG de acción desarrollado por FromSoftware en colaboración con George R. R. Martin.",
+    cover: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+    videoUrl: "https://www.youtube.com/embed/E3Huy2cdih0",
+    imagenes: [
+      "https://i.ytimg.com/vi/K_03kFqWfqs/maxresdefault.jpg",
+      "https://images6.alphacoders.com/120/1204831.jpg",
+      "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/ss_bfdfeaf3b0cba18a58db9c0a2c060d78684b0a4f.1920x1080.jpg",
+    ],
+    rating: 4.9,
+    precio: 59.99,
+    oferta: true,
+    estado: true,
+    categorias: ["RPG", "Dark Fantasy"],
+    plataformas: ["Windows", "PS5"],
+    ventas: [],
+  },
 
   {
     id: 8,
@@ -261,7 +281,8 @@ export const juegos: Game[] = [
     titulo: "Ironsight",
     description:
       "FPS gratuito ambientado en un futuro cercano con combates rápidos, drones, y armas futuristas.",
-    cover: "https://cdn.cloudflare.steamstatic.com/steam/apps/783770/header.jpg",
+    cover:
+      "https://cdn.cloudflare.steamstatic.com/steam/apps/783770/header.jpg",
     videoUrl: "https://www.youtube.com/embed/5wFaF5AKwB8",
     imagenes: [
       "https://static.wikia.nocookie.net/ironsight/images/1/1b/Ironsight_Screenshot_01.jpg",
@@ -378,4 +399,4 @@ export const juegos: Game[] = [
     plataformas: ["Switch"],
     ventas: [],
   },
-]
+];
