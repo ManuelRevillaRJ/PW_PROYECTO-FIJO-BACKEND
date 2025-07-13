@@ -18,7 +18,6 @@ async function main() {
       },
     });
   }
-  
 
   console.log("Initial users created.");
 

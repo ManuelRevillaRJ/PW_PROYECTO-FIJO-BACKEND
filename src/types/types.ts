@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 // Usuario
 export const UserSchema = z.object({
@@ -9,12 +9,12 @@ export const UserSchema = z.object({
   estado: z.boolean(),
   permiso: z.enum(["user", "admin"]),
   token: z.string(),
-})
-export type User = z.infer<typeof UserSchema>
+});
+export type User = z.infer<typeof UserSchema>;
 export const safeUser = UserSchema.omit({
   password: true,
   estado: true,
-})
+});
 
 // Venta (muchos a uno con Juego y Usuario)
 export const SaleSchema = z.object({
@@ -24,8 +24,8 @@ export const SaleSchema = z.object({
   juego_id: z.string(),
   codigo: z.string(),
   monto: z.number(),
-})
-export type Sale = z.infer<typeof SaleSchema>
+});
+export type Sale = z.infer<typeof SaleSchema>;
 
 // Juego (Game) - principal
 export const GameSchema = z.object({
@@ -42,8 +42,8 @@ export const GameSchema = z.object({
   categorias: z.array(z.string()),
   plataformas: z.array(z.string()),
   ventas: z.array(SaleSchema),
-})
-export type Game = z.infer<typeof GameSchema>
+});
+export type Game = z.infer<typeof GameSchema>;
 
 // Noticia (sin relaciones)
 export const NewsSchema = z.object({
@@ -51,5 +51,5 @@ export const NewsSchema = z.object({
   titulo: z.string(),
   texto: z.string(),
   activo: z.boolean(),
-})
-export type News = z.infer<typeof NewsSchema>
+});
+export type News = z.infer<typeof NewsSchema>;

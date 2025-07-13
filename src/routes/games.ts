@@ -1,69 +1,105 @@
-import { Router } from "express"
-import { juegos } from "../data/juegos"
-import { Game } from "../types/types"
-import validate from "../middleware/validationMiddleware"
-import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas"
-import z from "zod"
-import { StatusCodes } from "http-status-codes"
-import tokenValidation from "../middleware/tokenValidation"
-import prisma from "../db/prismaClient"
+import { Router } from "express";
+import { juegos } from "../data/juegos";
+import { Game } from "../types/types";
+import validate from "../middleware/validationMiddleware";
+import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas";
+import z from "zod";
+import { StatusCodes } from "http-status-codes";
+import tokenValidation from "../middleware/tokenValidation";
+import prisma from "../db/prismaClient";
 
-const gamesRouter = Router()
+const gamesRouter = Router();
 // gamesRouter.use(tokenValidation())
 
 // Endpoints juegos --------------------------
 
-gamesRouter.get("/", validate({ schema: gamesQuerySchema, source: "query" }), (req, res) => {
-  const { category, platform, offer, strict } = req.query as z.infer<typeof gamesQuerySchema>
+//IMPLEMENTADO PARA BUSQUEDA POR NOMBRE
+gamesRouter.get("/buscar", (req, res) => {
+  const { nombre } = req.query;
 
-  let juegosFiltrados: Game[] = juegos
-
-  if (category) {
-    const categories = Array.isArray(category) ? category : [category]
-    juegosFiltrados = juegosFiltrados.filter((j) => {
-      const categoriasJuego = j.categorias.map((c) => c.toLowerCase())
-      return strict
-        ? categories.every((c) => categoriasJuego.includes(c.toLowerCase()))
-        : categories.some((c) => categoriasJuego.includes(c.toLowerCase()))
-    })
+  if (typeof nombre !== "string" || nombre.trim() === "") {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "Parámetro 'nombre' inválido" });
+    return;
   }
 
-  if (platform) {
-    const platforms = Array.isArray(platform) ? platform : [platform]
-    juegosFiltrados = juegosFiltrados.filter((j) => {
-      const plataformasJuego = j.plataformas.map((p) => p.toLowerCase())
-      return platforms.some((p) => plataformasJuego.includes(p.toLowerCase()))
-    })
-  }
+  const nombreBuscado = nombre.toLowerCase();
+  const juegosFiltrados = juegos.filter((juego) =>
+    juego.titulo.toLowerCase().includes(nombreBuscado)
+  );
 
-  if (offer) {
-    juegosFiltrados = juegosFiltrados.filter((j) => j.oferta === offer)
-  }
+  // Ahora devolvemos el objeto Game completo
+  res.status(StatusCodes.OK).json(juegosFiltrados);
+});
 
-  res.json(juegosFiltrados)
-})
+//---------------------
+
+gamesRouter.get(
+  "/",
+  validate({ schema: gamesQuerySchema, source: "query" }),
+  (req, res) => {
+    const { category, platform, offer, strict } = req.query as z.infer<
+      typeof gamesQuerySchema
+    >;
+
+    let juegosFiltrados: Game[] = juegos;
+
+    if (category) {
+      const categories = Array.isArray(category) ? category : [category];
+      juegosFiltrados = juegosFiltrados.filter((j) => {
+        const categoriasJuego = j.categorias.map((c) => c.toLowerCase());
+        return strict
+          ? categories.every((c) => categoriasJuego.includes(c.toLowerCase()))
+          : categories.some((c) => categoriasJuego.includes(c.toLowerCase()));
+      });
+    }
+
+    if (platform) {
+      const platforms = Array.isArray(platform) ? platform : [platform];
+      juegosFiltrados = juegosFiltrados.filter((j) => {
+        const plataformasJuego = j.plataformas.map((p) => p.toLowerCase());
+        return platforms.some((p) =>
+          plataformasJuego.includes(p.toLowerCase())
+        );
+      });
+    }
+
+    if (offer) {
+      juegosFiltrados = juegosFiltrados.filter((j) => j.oferta === offer);
+    }
+
+    res.json(juegosFiltrados);
+  }
+);
 
 gamesRouter.get("/top-rated", (req, res) => {
-  const top5 = juegos.slice().sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 5);
+  const top5 = juegos
+    .slice()
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    .slice(0, 5);
   res.json(top5);
 });
 
+//Retora por ID
 gamesRouter.get(
   "/:id",
   validate({ schema: gameQuerySchema, source: "params" }),
   async (req, res) => {
-    const idParam = req.params.id
+    const idParam = req.params.id;
 
     // const juego = juegos.find((j) => j.id === id)
-    const juego = await prisma.juego.findUnique({ where: { id: parseInt(idParam) } })
+    const juego = await prisma.juego.findUnique({
+      where: { id: parseInt(idParam) },
+    });
 
     if (!juego) {
-      res.status(StatusCodes.NOT_FOUND).json({ error: "Juego no encontrado" })
-      return
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Juego no encontrado" });
+      return;
     }
-    res.json(juego)
+    res.json(juego);
   }
-)
+);
 
 gamesRouter.delete("/:id", async (req, res) => {
   const idParam = req.params.id;
@@ -75,10 +111,9 @@ gamesRouter.delete("/:id", async (req, res) => {
   }
 });
 
-
 gamesRouter.put("/:id", async (req, res) => {
   const idParam = req.params.id;
-  const datosActualizados = req.body; 
+  const datosActualizados = req.body;
 
   try {
     const juegoActualizado = await prisma.juego.update({
@@ -91,8 +126,4 @@ gamesRouter.put("/:id", async (req, res) => {
   }
 });
 
-
-
-
-
-export default gamesRouter
+export default gamesRouter;
