@@ -65,6 +65,34 @@ gamesRouter.get(
   }
 )
 
+gamesRouter.delete("/:id", async (req, res) => {
+  const idParam = req.params.id;
+  try {
+    await prisma.juego.delete({ where: { id: parseInt(idParam) } });
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: "Juego no encontrado" });
+  }
+});
+
+
+gamesRouter.put("/:id", async (req, res) => {
+  const idParam = req.params.id;
+  const datosActualizados = req.body; 
+
+  try {
+    const juegoActualizado = await prisma.juego.update({
+      where: { id: parseInt(idParam) },
+      data: datosActualizados,
+    });
+    res.json(juegoActualizado);
+  } catch (error) {
+    res.status(404).json({ error: "Juego no encontrado" });
+  }
+});
+
+
+
 
 
 export default gamesRouter
