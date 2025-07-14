@@ -13,6 +13,69 @@ const gamesRouter = Router()
 
 // Endpoints juegos --------------------------
 
+// VENTAS DE JUEGOS POR CADA MES
+
+gamesRouter.get("/ventas/por-mes", async (_, res) => {
+  try {
+    const ventas = await prisma.venta.findMany({
+      select: {
+        fecha: true,
+        monto_pagado: true,
+        juego: {
+          select: {
+            id: true,
+            titulo: true,
+          },
+        },
+      },
+    });
+
+    const agrupadas: Record<
+      string,
+      {
+        juegoId: number;
+        titulo: string;
+        mes: string;
+        totalVentas: number;
+        cantidadVentas: number;
+      }
+    > = {};
+
+    for (const venta of ventas) {
+      const mes =
+        venta.fecha.getFullYear() +
+        "-" +
+        String(venta.fecha.getMonth() + 1).padStart(2, "0");
+      const key = `${venta.juego.id}-${mes}`;
+
+      if (!agrupadas[key]) {
+        agrupadas[key] = {
+          juegoId: venta.juego.id,
+          titulo: venta.juego.titulo,
+          mes,
+          totalVentas: 0,
+          cantidadVentas: 0,
+        };
+      }
+
+      agrupadas[key].totalVentas += venta.monto_pagado;
+      agrupadas[key].cantidadVentas += 1;
+    }
+
+    const resultado = Object.values(agrupadas).sort((a, b) => {
+      if (a.mes === b.mes) return a.juegoId - b.juegoId;
+      return a.mes.localeCompare(b.mes);
+    });
+
+    res.json(resultado);
+  } catch (error) {
+    console.error("Error al obtener ventas por mes:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+//-------------------
+
+
 //IMPLEMENTADO PARA BUSQUEDA POR NOMBRE
 gamesRouter.get("/buscar", (req, res) => {
   const { nombre } = req.query
