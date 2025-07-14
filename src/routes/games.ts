@@ -121,5 +121,21 @@ gamesRouter.put("/:id", async (req, res) => {
     res.status(404).json({ error: "Juego no encontrado" });
   }
 });
+/*
+
+gamesRouter.post("/:id", async (req, res) => {
+  const idParam = req.params.id;
+  const datosActualizados = req.body;
+
+  try {
+    const juegoActualizado = await prisma.juego.update({
+      where: { id: parseInt(idParam) },
+      data: datosActualizados,
+    });
+    res.json(juegoActualizado);
+  } catch (error) {
+    res.status(404).json({ error: "Juego no encontrado" });
+  }
+}); */
 
 export default gamesRouter;

@@ -16,6 +16,17 @@ const sessionsRouter = Router()
 
 // Endpoints sesiones --------------------------
 
+const bcrypt = require('bcrypt');
+
+async function hashearContrasena(pass) {
+  const saltRounds = 2; 
+  const hash = await bcrypt.hash(pass, saltRounds);
+  return hash;
+}
+
+
+
+
 sessionsRouter.post(
   "/signup",
   validate({ schema: signupSchema, source: "body" }),
@@ -43,11 +54,12 @@ sessionsRouter.post(
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
     }
 
+    const hashPassword = await hashearContrasena(password)
     const newUser = await prisma.usuario.create({
       data: {
         nombre: nombre,
         correo: correo,
-        password: password,
+        password: hashPassword,
         estado: true,
         token: "",
       },
@@ -74,7 +86,9 @@ sessionsRouter.post(
       return
     }
 
-    if (foundUser.password !== password) {
+    const esPasswordValido = await bcrypt.compare(password, foundUser.password);
+
+    if (!esPasswordValido) {
       res.status(StatusCodes.NOT_FOUND).json({ message: "Credenciales invalidas" })
       return
     }
