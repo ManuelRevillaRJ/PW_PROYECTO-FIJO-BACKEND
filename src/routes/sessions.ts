@@ -1,5 +1,4 @@
 import { Router } from "express"
-import SMTP2GOApi from "smtp2go-nodejs"
 import jwt from "jsonwebtoken"
 import validate from "../middleware/validationMiddleware"
 import {
@@ -8,54 +7,58 @@ import {
   logoutSchema,
   signupSchema,
 } from "../schemas/sessionSchemas"
-import { usuarios } from "../data/usuarios"
-import { api, JWT_SECRET, SENDER, tokenOptions } from "../config"
+import { api, JWT_SECRET, SENDER } from "../config"
 import { StatusCodes } from "http-status-codes"
-import { safeUser, User } from "../types/types"
+import { safeUser } from "../types/types"
 import prisma from "../db/prismaClient"
 
 const sessionsRouter = Router()
 
 // Endpoints sesiones --------------------------
 
-sessionsRouter.post("/signup", validate({ schema: signupSchema, source: "body" }), (req, res) => {
-  const { nombre, correo, password } = req.body
+sessionsRouter.post(
+  "/signup",
+  validate({ schema: signupSchema, source: "body" }),
+  async (req, res) => {
+    const { nombre, correo, password } = req.body
 
-  const foundUser = usuarios.find((u) => u.correo === correo)
+    const foundUser = await prisma.usuario.findUnique({ where: { correo: correo } })
 
-  if (foundUser) {
-    res.status(StatusCodes.CONFLICT).json({ message: "Ya existe un usuario con este correo" })
-    return
-  }
+    if (foundUser) {
+      res.status(StatusCodes.CONFLICT).json({ message: "Ya existe un usuario con este correo" })
+      return
+    }
 
-  // TODO: password hash con lib bcrypt y generar JWT
+    // TODO: password hash con lib bcrypt y generar JWT
 
-  try {
-    const mailService = api
-      .mail()
-      .to({ email: correo, name: nombre })
-      .from({ email: SENDER })
-      .subject("Creacion de Cuenta").html(`<h1>Bienvenido a GameStore</h1>
+    try {
+      const mailService = api
+        .mail()
+        .to({ email: correo, name: nombre })
+        .from({ email: SENDER })
+        .subject("Creacion de Cuenta").html(`<h1>Bienvenido a GameStore</h1>
   <p>Cuenta creada exitosamente!</p>`)
-    api.client().consume(mailService)
-  } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
+      api.client().consume(mailService)
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
+    }
+
+    const newUser = await prisma.usuario.create({
+      data: {
+        nombre: nombre,
+        correo: correo,
+        password: password,
+        estado: true,
+        token: "",
+      },
+    })
+
+    const usuario = safeUser.parse(newUser)
+    const token = jwt.sign(usuario, JWT_SECRET)
+
+    res.status(StatusCodes.CREATED).json({ token: token })
   }
-
-  const newUser: User = {
-    id: Date.now(),
-    nombre: nombre,
-    correo: correo,
-    password: password, // TODO: hashear password
-    estado: true,
-    permiso: "user",
-  }
-
-  const usuario = safeUser.parse(newUser)
-  const token = jwt.sign(usuario, JWT_SECRET)
-
-  res.status(StatusCodes.CREATED).json({ token: token })
-})
+)
 
 sessionsRouter.post(
   "/login",
@@ -87,31 +90,44 @@ sessionsRouter.post(
   }
 )
 
-sessionsRouter.post("/logout", validate({ schema: logoutSchema, source: "body" }), (req, res) => {
-  const { correo } = req.body
+sessionsRouter.post(
+  "/logout",
+  validate({ schema: logoutSchema, source: "body" }),
+  async (req, res) => {
+    const { correo } = req.body
 
-  const foundUser = usuarios.find((u) => u.correo === correo)
+    const foundUser = await prisma.usuario.findUnique({ where: { correo: correo } })
 
-  if (!foundUser) {
-    // No hacer nada
-    // res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no encontrado" })
-    return
+    if (!foundUser) {
+      // No hacer nada
+      // res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario no encontrado" })
+      return
+    }
+
+    const loggedOutUser = await prisma.usuario.update({
+      where: { correo: correo },
+      data: {
+        token: "",
+      },
+    })
+
+    // TODO: Retornar usuario sin token
+
+    res
+      .status(StatusCodes.OK)
+      .json({ user: safeUser.parse(loggedOutUser), message: "Usuario logged out" })
   }
-
-  // TODO: Retornar usuario sin token
-
-  res.status(StatusCodes.OK).json({ message: "Usuario logged out" })
-})
+)
 
 sessionsRouter.post(
   "/change_pass",
   validate({ schema: changePassSchema, source: "body" }),
-  (req, res) => {
+  async (req, res) => {
     const { correo, newPassword } = req.body
 
     // Verificar si correo existe
-    const listaUsuarios = usuarios
-    const foundUser = listaUsuarios.find((u) => u.correo === correo)
+    const foundUser = await prisma.usuario.findUnique({ where: { correo: correo } })
+
     if (!foundUser) {
       res.status(StatusCodes.NOT_FOUND).json({ message: "Usuario con este correo no existe" })
     }
@@ -120,6 +136,13 @@ sessionsRouter.post(
 
     // Mandamos correo que lo redirige a la pagina de login
     try {
+      const changedPassUser = await prisma.usuario.update({
+        where: { correo: correo },
+        data: {
+          password: newPassword,
+        },
+      })
+
       const mailService = api
         .mail()
         .to({ email: correo, name: "usuario" })
@@ -131,10 +154,13 @@ sessionsRouter.post(
                   <a href="https://manuelrevillarj.github.io/PW_G2_F/iniciar_sesion" target="_blank">Iniciar sesión</a>
                 </p>`)
       api.client().consume(mailService)
+      res.status(StatusCodes.CREATED).json({
+        user: safeUser.parse(changedPassUser),
+        message: "Contraseña restaurada exitosamente!",
+      })
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
     }
-    res.status(StatusCodes.CREATED).json({ message: "Contraseña restaurada exitosamente!" })
   }
 )
 
