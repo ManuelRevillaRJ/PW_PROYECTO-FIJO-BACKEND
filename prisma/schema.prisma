@@ -71,7 +71,7 @@ model Juego {
   cover          String
   imagenes       String[]
   videoURL       String?
-  nCarritos      Carrito[]         @relation("JuegosEnCarrito")
+  nCarritos      Carrito[]        @relation("JuegosEnCarrito")
 }
 
 model Calificacion {

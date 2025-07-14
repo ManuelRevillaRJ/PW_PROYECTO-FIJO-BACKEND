@@ -1,77 +1,66 @@
 import { Router } from "express";
-import { juegos } from "../data/juegos";
-import { Game } from "../types/types";
-import validate from "../middleware/validationMiddleware";
-import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas";
-import z from "zod";
-import { StatusCodes } from "http-status-codes";
-import tokenValidation from "../middleware/tokenValidation";
-import prisma from "../db/prismaClient";
+import { juegos } from "../data/juegos"
+import { Game } from "../types/types"
+import validate from "../middleware/validationMiddleware"
+import { gameQuerySchema, gamesQuerySchema } from "../schemas/gameSchemas"
+import z from "zod"
+import { StatusCodes } from "http-status-codes"
+import tokenValidation from "../middleware/tokenValidation"
+import prisma from "../db/prismaClient"
 
-const gamesRouter = Router();
+const gamesRouter = Router()
 // gamesRouter.use(tokenValidation())
 
 // Endpoints juegos --------------------------
 
 //IMPLEMENTADO PARA BUSQUEDA POR NOMBRE
 gamesRouter.get("/buscar", (req, res) => {
-  const { nombre } = req.query;
+  const { nombre } = req.query
 
   if (typeof nombre !== "string" || nombre.trim() === "") {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: "Parámetro 'nombre' inválido" });
-    return;
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Parámetro 'nombre' inválido" })
+    return
   }
 
-  const nombreBuscado = nombre.toLowerCase();
+  const nombreBuscado = nombre.toLowerCase()
   const juegosFiltrados = juegos.filter((juego) =>
     juego.titulo.toLowerCase().includes(nombreBuscado)
-  );
+  )
 
   // Ahora devolvemos el objeto Game completo
-  res.status(StatusCodes.OK).json(juegosFiltrados);
-});
+  res.status(StatusCodes.OK).json(juegosFiltrados)
+})
 
 //---------------------
 
-gamesRouter.get(
-  "/",
-  validate({ schema: gamesQuerySchema, source: "query" }),
-  (req, res) => {
-    const { category, platform, offer, strict } = req.query as z.infer<
-      typeof gamesQuerySchema
-    >;
+gamesRouter.get("/", async (_, res) => {
+  try {
+    // const juegos = await prisma.juego.findMany({
+    //   include: {
+    //     categoria: true,
+    //     plataformas: {
+    //       include: {
+    //         plataforma: true,
+    //       },
+    //     },
+    //   },
+    // })
 
-    let juegosFiltrados: Game[] = juegos;
+    // // Formatea las plataformas para que sea un array de strings
+    // const juegosFormateados = juegos.map((j) => ({
+    //   ...j,
+    //   categoria: j.categoria.nombre,
+    //   plataformas: j.plataformas.map((jp) => jp.plataforma.nombre),
+    // }))
 
-    if (category) {
-      const categories = Array.isArray(category) ? category : [category];
-      juegosFiltrados = juegosFiltrados.filter((j) => {
-        const categoriasJuego = j.categorias.map((c) => c.toLowerCase());
-        return strict
-          ? categories.every((c) => categoriasJuego.includes(c.toLowerCase()))
-          : categories.some((c) => categoriasJuego.includes(c.toLowerCase()));
-      });
-    }
-
-    if (platform) {
-      const platforms = Array.isArray(platform) ? platform : [platform];
-      juegosFiltrados = juegosFiltrados.filter((j) => {
-        const plataformasJuego = j.plataformas.map((p) => p.toLowerCase());
-        return platforms.some((p) =>
-          plataformasJuego.includes(p.toLowerCase())
-        );
-      });
-    }
-
-    if (offer) {
-      juegosFiltrados = juegosFiltrados.filter((j) => j.oferta === offer);
-    }
-
-    res.json(juegosFiltrados);
+    // res.json(juegosFormateados)
+    res.json(juegos)
+    console.log(juegos)
+  } catch (err) {
+    console.error("Error al obtener juegos:", err)
+    res.status(500).json({ error: "Error interno del servidor" })
   }
-);
+})
 
 gamesRouter.get("/top-rated", (req, res) => {
   const top5 = juegos

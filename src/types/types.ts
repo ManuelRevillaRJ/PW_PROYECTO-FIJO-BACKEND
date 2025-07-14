@@ -37,12 +37,12 @@ export const GameSchema = z.object({
   oferta: z.boolean(),
   estado: z.boolean(),
   cover: z.string().url().optional(),
-  imagenes: z.array(z.string().url()).optional(),
+  detalleImagenes: z.array(z.string().url()).optional(),
   videoUrl: z.string().url().optional(),
   categorias: z.array(z.string()),
   plataformas: z.array(z.string()),
   ventas: z.array(SaleSchema),
-});
+})
 export type Game = z.infer<typeof GameSchema>;
 
 // Noticia (sin relaciones)
