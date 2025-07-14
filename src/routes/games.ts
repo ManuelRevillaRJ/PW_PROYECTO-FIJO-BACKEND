@@ -37,25 +37,6 @@ gamesRouter.get("/buscar", (req, res) => {
 
 gamesRouter.get("/", async (_, res) => {
   try {
-    // const juegos = await prisma.juego.findMany({
-    //   include: {
-    //     categoria: true,
-    //     plataformas: {
-    //       include: {
-    //         plataforma: true,
-    //       },
-    //     },
-    //   },
-    // })
-
-    // // Formatea las plataformas para que sea un array de strings
-    // const juegosFormateados = juegos.map((j) => ({
-    //   ...j,
-    //   categoria: j.categoria.nombre,
-    //   plataformas: j.plataformas.map((jp) => jp.plataforma.nombre),
-    // }))
-
-    // res.json(juegosFormateados)
     res.json(juegos);
     console.log(juegos);
   } catch (err) {
@@ -79,11 +60,21 @@ gamesRouter.get("/top-rated", async (req, res) => {
   }
 });
 
-gamesRouter.get("/best-sellers", (req, res) => {
-  const bestSellers: Game[] = juegos
-    .sort((a, b) => (b.ventas?.length ?? 0) - (a.ventas?.length ?? 0))
-    .slice(0, 12);
-  res.json(bestSellers);
+gamesRouter.get("/best-sellers", async (req, res) => {
+  try {
+    const top12 = await prisma.juego.findMany({
+      orderBy: {
+        ventas: {
+          _count: "desc", // o 'asc'
+        },
+      },
+      take: 12,
+    });
+    res.json(top12);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error obteniendo juegos top rated" });
+  }
 });
 
 //Retora por ID
