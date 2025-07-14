@@ -70,7 +70,6 @@ gamesRouter.get("/top-rated", async (req, res) => {
       },
       take: 12,
     });
-
     res.json(top12);
   } catch (error) {
     console.error(error);
@@ -131,7 +130,7 @@ gamesRouter.put("/:id", async (req, res) => {
 });
 /*
 
-gamesRouter.post("/:id", async (req, res) => {
+gamesRouter.post("/", async (req, res) => {
   const idParam = req.params.id;
   const datosActualizados = req.body;
 
