@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response} from "express";
 import { juegos } from "../data/juegos";
 import { Game } from "../types/types";
 import validate from "../middleware/validationMiddleware";
@@ -12,7 +12,6 @@ const gamesRouter = Router();
 // gamesRouter.use(tokenValidation())
 
 // Endpoints juegos --------------------------
-
 
 //IMPLEMENTADO PARA BUSQUEDA POR NOMBRE
 gamesRouter.get("/buscar", (req, res) => {
@@ -114,6 +113,7 @@ gamesRouter.delete("/:id", async (req, res) => {
     res.status(204).send();
   } catch (error) {
     res.status(404).json({ error: "Juego no encontrado" });
+    return
   }
 });
 
@@ -131,6 +131,34 @@ gamesRouter.put("/:id", async (req, res) => {
     res.status(404).json({ error: "Juego no encontrado" });
   }
 });
+
+
+gamesRouter.post("/", async (req: Request, res: Response) => {
+  try {
+    const juego = req.body;
+
+    if (
+      !juego.titulo ||
+      !juego.descripcion ||
+      juego.precio == null ||
+      juego.rating == null ||
+      !juego.cover
+    ) {
+      res.status(400).json({ msg: "Faltan campos obligatorios" });
+    }
+
+    const juegoCreado = await prisma.juego.create({
+      data: juego,
+    });
+
+    res.status(201).json({ juego: juegoCreado });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al crear el juego" });
+  }
+}); 
+
+
 
 
 
