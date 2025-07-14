@@ -1,4 +1,4 @@
-import { Router, Request, Response} from "express";
+import { Router, Request, Response } from "express";
 import { juegos } from "../data/juegos";
 import { Game } from "../types/types";
 import validate from "../middleware/validationMiddleware";
@@ -113,7 +113,7 @@ gamesRouter.delete("/:id", async (req, res) => {
     res.status(204).send();
   } catch (error) {
     res.status(404).json({ error: "Juego no encontrado" });
-    return
+    return;
   }
 });
 
@@ -132,7 +132,6 @@ gamesRouter.put("/:id", async (req, res) => {
   }
 });
 
-
 gamesRouter.post("/", async (req: Request, res: Response) => {
   try {
     const juego = req.body;
@@ -147,8 +146,19 @@ gamesRouter.post("/", async (req: Request, res: Response) => {
       res.status(400).json({ msg: "Faltan campos obligatorios" });
     }
 
+    const lastRecord = await prisma.juego.findFirst({
+      orderBy: {
+        id: "desc",
+      },
+    });
+
+    const nextId = lastRecord ? lastRecord.id + 1 : 1;
+
     const juegoCreado = await prisma.juego.create({
-      data: juego,
+      data: {
+        ...juego,
+        id: nextId,
+      },
     });
 
     res.status(201).json({ juego: juegoCreado });
@@ -156,10 +166,6 @@ gamesRouter.post("/", async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ msg: "Error al crear el juego" });
   }
-}); 
-
-
-
-
+});
 
 export default gamesRouter;
