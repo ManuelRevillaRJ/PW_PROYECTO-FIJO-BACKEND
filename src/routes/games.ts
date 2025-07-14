@@ -62,13 +62,21 @@ gamesRouter.get("/", async (_, res) => {
   }
 })
 
-gamesRouter.get("/top-rated", (req, res) => {
-  const top5 = juegos
-    .slice()
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, 12)
-  res.json(top5)
-})
+gamesRouter.get("/top-rated", async (req, res) => {
+  try {
+    const top12 = await prisma.juego.findMany({
+      orderBy: {
+        rating: "desc",
+      },
+      take: 12,
+    });
+
+    res.json(top12);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error obteniendo juegos top rated" });
+  }
+});
 
 gamesRouter.get("/best-sellers", (req, res) => {
   const bestSellers: Game[] = juegos
