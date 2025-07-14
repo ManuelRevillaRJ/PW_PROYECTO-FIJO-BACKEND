@@ -12,11 +12,13 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://manuelrevillarj.github.io/PW_G2_F/"],
-  })
-)
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "https://manuelrevillarj.github.io/PW_G2_F/"],
+//   })
+// )
+
+app.use(cors())
 
 // Middleware debug
 app.use(debug())

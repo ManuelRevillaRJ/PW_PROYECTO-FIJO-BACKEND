@@ -66,9 +66,16 @@ gamesRouter.get("/top-rated", (req, res) => {
   const top5 = juegos
     .slice()
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, 5);
-  res.json(top5);
-});
+    .slice(0, 12)
+  res.json(top5)
+})
+
+gamesRouter.get("/best-sellers", (req, res) => {
+  const bestSellers: Game[] = juegos
+    .sort((a, b) => (b.ventas?.length ?? 0) - (a.ventas?.length ?? 0))
+    .slice(0, 12)
+  res.json(bestSellers)
+})
 
 //Retora por ID
 gamesRouter.get(

@@ -128,7 +128,7 @@ sessionsRouter.post(
                 <p>Contraseña restaurada!</p>
                 <p>
                   Puedes iniciar sesión haciendo clic en el siguiente enlace:<br />
-                  <a href="http://localhost:5173/iniciar_sesion" target="_blank">Iniciar sesión</a>
+                  <a href="https://manuelrevillarj.github.io/PW_G2_F/iniciar_sesion" target="_blank">Iniciar sesión</a>
                 </p>`)
       api.client().consume(mailService)
     } catch (error) {
