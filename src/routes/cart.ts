@@ -7,16 +7,14 @@ import { randomUUID } from "crypto"
 const cartRouter = Router()
 
 cartRouter.post("/checkout", async (req, res) => {
-  const { userId, gameIdList } = req.body as { userId: number; gameIdList: number[] }
+  const { correo, gameIdList } = req.body as { correo: string; gameIdList: number[] }
 
-  const usuario = await prisma.usuario.findUnique({ where: { id: userId } })
+  const usuario = await prisma.usuario.findUnique({ where: { correo: correo } })
 
   if (!usuario) {
     res.status(StatusCodes.NOT_FOUND).json({ error: "Usuario no encontrado" })
     return
   }
-
-  let codigoList = []
 
   const ventasCarrito = await Promise.all(
     gameIdList.map(async (gameId) => {
@@ -24,22 +22,29 @@ cartRouter.post("/checkout", async (req, res) => {
       if (!juego) return null
 
       const codigo = randomUUID().split("-")[0]
-      codigoList.push({ titulo: juego.titulo, codigo })
 
-      return prisma.venta.create({
-        data: {
-          codigo,
-          monto_pagado: juego.precio,
-          usuario: { connect: { id: userId } },
-          juego: { connect: { id: juego.id } },
-        },
-      })
+      return {
+        venta: await prisma.venta.create({
+          data: {
+            codigo,
+            monto_pagado: juego.precio,
+            usuario: { connect: { id: usuario.id } },
+            juego: { connect: { id: juego.id } },
+          },
+        }),
+        titulo: juego.titulo,
+        codigo,
+      }
     })
   )
 
-  const ventasFiltradas = ventasCarrito.filter(Boolean) // sin nulls
+  const ventasFiltradas = ventasCarrito.filter(Boolean) as {
+    venta: any
+    titulo: string
+    codigo: string
+  }[]
 
-  const htmlJuegos = codigoList
+  const htmlJuegos = ventasFiltradas
     .map((item) => `<li><strong>${item.titulo}</strong>: ${item.codigo}</li>`)
     .join("")
 
@@ -56,9 +61,10 @@ cartRouter.post("/checkout", async (req, res) => {
       .from({ email: SENDER })
       .subject("Compra de Juegos")
       .html(htmlContent)
-    api.client().consume(mailService)
+    await api.client().consume(mailService)
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error mandando correo" })
+    return
   }
 
   res.status(StatusCodes.CREATED).json({
